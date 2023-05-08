@@ -1,10 +1,12 @@
+package Model;
+
 public class Piece {
     private boolean jump, enterWater, side;
     private String name, fileDir;
     private int rank, row, col;
 
-
-    public Piece(String name, int rank, int row, int col, boolean jump, boolean enterWater, boolean side, String fileDir){
+    public Piece(String name, int rank, int row, int col, boolean jump, boolean enterWater, boolean side,
+            String fileDir) {
         this.name = name;
         this.rank = rank;
         this.row = row;
@@ -15,8 +17,7 @@ public class Piece {
         this.fileDir = fileDir;
     }
 
-
-    //special getter
+    // special getter
     public String getPieceName() {
         if (!side) {
             String text = String.valueOf(name.charAt(0)) + "0";
@@ -27,28 +28,32 @@ public class Piece {
         }
     }
 
-
-
-    //getter
-    public String getName(){
+    // getter
+    public String getName() {
         return name;
     }
-    public int getRank(){
+
+    public int getRank() {
         return rank;
     }
-    public int getRow(){
+
+    public int getRow() {
         return row;
     }
-    public int getCol(){
+
+    public int getCol() {
         return col;
     }
-    public boolean getJump(){
+
+    public boolean getJump() {
         return jump;
     }
-    public boolean getEnterWater(){
+
+    public boolean getEnterWater() {
         return enterWater;
     }
-    public String getFileDir(){
+
+    public String getFileDir() {
         return fileDir;
     }
 
