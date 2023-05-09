@@ -24,7 +24,6 @@ public class Tile {
         den = true;
         name = "D";
         this.side = side;
-
     }
 
     public void setTrap(boolean side) {

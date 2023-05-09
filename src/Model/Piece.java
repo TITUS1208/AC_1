@@ -56,5 +56,4 @@ public class Piece {
     public String getFileDir() {
         return fileDir;
     }
-
 }
