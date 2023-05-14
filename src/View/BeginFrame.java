@@ -1,5 +1,7 @@
 package View;
 
-public class BeginFrame {
+import javax.swing.*;
+
+public class BeginFrame extends JFrame {
 
 }

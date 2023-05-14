@@ -1,6 +1,9 @@
 package View;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
@@ -20,6 +23,7 @@ public class MainFrame extends JFrame {
     private Chessboard chessboard;
 
     private Icon settingsIcon;
+    private ImageIcon jungleIcon;
 
     public MainFrame(int frameWidth, int frameHeight) {
         this.frameWidth = frameWidth;
@@ -30,6 +34,10 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
         setVisible(true);
+        setResizable(false);
+        getContentPane().setBackground(Color.PINK); // Change soon
+        jungleIcon = new ImageIcon("resource/jungleIcon.png");
+        setIconImage(jungleIcon.getImage());
 
         addRestartButton();
         addUndoButton();
@@ -96,14 +104,14 @@ public class MainFrame extends JFrame {
         settingsIcon = new ImageIcon("resource/settingsIcon.png");
         settingsButton = new JButton(settingsIcon);
         settingsButton.setFocusable(false);
-        settingsButton.setBounds(0, 0, 30, 30);
+        settingsButton.setBounds(0, 0, 36, 36);
 
         settingsButton.setOpaque(false);
         settingsButton.setContentAreaFilled(false);
         settingsButton.setBorderPainted(false);
         settingsButton.addActionListener(e -> {
             System.out.println("settingsButton being clicked");
-            // Open settingsFrame here
+            // new SettingsFrame(400, 700);
         });
         add(settingsButton);
     }
@@ -113,7 +121,7 @@ public class MainFrame extends JFrame {
                                                                   // setText()
         statusLabel.setBounds(30 + 7 * 70 + 30, 30, 300, 50);
         statusLabel.setHorizontalTextPosition(JLabel.CENTER);
-        statusLabel.setFont(new Font("Comic Sans", Font.BOLD, 16));
+        statusLabel.setFont(new Font("Comic Sans", Font.BOLD, 18));
         add(statusLabel);
     }
 
