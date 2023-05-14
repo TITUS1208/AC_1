@@ -1,7 +1,6 @@
 package View;
 
 import java.awt.Font;
-
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
@@ -98,6 +97,10 @@ public class MainFrame extends JFrame {
         settingsButton = new JButton(settingsIcon);
         settingsButton.setFocusable(false);
         settingsButton.setBounds(0, 0, 30, 30);
+
+        settingsButton.setOpaque(false);
+        settingsButton.setContentAreaFilled(false);
+        settingsButton.setBorderPainted(false);
         settingsButton.addActionListener(e -> {
             System.out.println("settingsButton being clicked");
             // Open settingsFrame here
