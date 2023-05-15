@@ -15,6 +15,8 @@ public class Main {
             // SettingsFrame settingsFrame = new SettingsFrame(300, 500);
             BeginFrame beginFrame = new BeginFrame(300, 200);
 
+
+//
             // GameController gameController = new
             // GameController(mainFrame.getChessboardComponent(), new Chessboard());
         });
