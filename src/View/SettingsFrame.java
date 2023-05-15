@@ -10,8 +10,9 @@ public class SettingsFrame extends JFrame {
     private final int buttonHeight = 60;
 
     private JButton changeThemeButton;
-    private JButton turnOnButton;
-    private JButton turnOffButton;
+    // private JButton turnOnButton;
+    // private JButton turnOffButton;
+    private JButton changeBGMButton;
     private JButton backButton;
 
     private JLabel titleLabel;
@@ -31,14 +32,15 @@ public class SettingsFrame extends JFrame {
         jungleIcon = new ImageIcon("resource/jungleIcon.png");
         setIconImage(jungleIcon.getImage());
 
-        addchangeThemeButton();
-        addTurnOnButton();
-        addTurnOffButton();
+        addChangeThemeButton();
+        // addTurnOnButton();
+        // addTurnOffButton();
+        addChangeBGMButton();
         addbackButton();
         addTitleLabel();
     }
 
-    public void addchangeThemeButton() {
+    public void addChangeThemeButton() {
         changeThemeButton = new JButton("Change Theme");
         changeThemeButton.setFont(new Font("Serif", Font.BOLD, 16));
         changeThemeButton.setFocusable(false);
@@ -46,43 +48,57 @@ public class SettingsFrame extends JFrame {
                 buttonHeight);
         changeThemeButton.addActionListener(e -> {
             System.out.println("changeThemeButton being clicked");
-            // Change theme here
-            this.setVisible(false); // Closes settingsFrame after changing theme
+            // Change BGM here
         });
         add(changeThemeButton);
     }
 
-    public void addTurnOnButton() {
-        turnOnButton = new JButton("Turn On BGM");
-        turnOnButton.setFont(new Font("Serif", Font.BOLD, 16));
-        turnOnButton.setFocusable(false);
-        turnOnButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 2 + buttonHeight * 2, buttonWidth,
-                buttonHeight);
-        turnOnButton.addActionListener(e -> {
-            System.out.println("turnOnButton being clicked");
-            //
-        });
-        add(turnOnButton);
-    }
+    // public void addTurnOnButton() {
+    // turnOnButton = new JButton("Turn On BGM");
+    // turnOnButton.setFont(new Font("Serif", Font.BOLD, 16));
+    // turnOnButton.setFocusable(false);
+    // turnOnButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 2 +
+    // buttonHeight * 2, buttonWidth,
+    // buttonHeight);
+    // turnOnButton.addActionListener(e -> {
+    // System.out.println("turnOnButton being clicked");
+    // //
+    // });
+    // add(turnOnButton);
+    // }
 
-    public void addTurnOffButton() {
-        turnOffButton = new JButton("Turn Off BGM");
-        turnOffButton.setFont(new Font("Serif", Font.BOLD, 16));
-        turnOffButton.setFocusable(false);
-        turnOffButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
+    // public void addTurnOffButton() {
+    // turnOffButton = new JButton("Turn Off BGM");
+    // turnOffButton.setFont(new Font("Serif", Font.BOLD, 16));
+    // turnOffButton.setFocusable(false);
+    // turnOffButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 3 +
+    // buttonHeight * 3, buttonWidth,
+    // buttonHeight);
+    // turnOffButton.addActionListener(e -> {
+    // System.out.println("turnOffButton being clicked");
+    // //
+    // });
+    // add(turnOffButton);
+    // }
+
+    public void addChangeBGMButton() {
+        changeBGMButton = new JButton("Change BGM");
+        changeBGMButton.setFont(new Font("Serif", Font.BOLD, 16));
+        changeBGMButton.setFocusable(false);
+        changeBGMButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 2 + buttonHeight * 2, buttonWidth,
                 buttonHeight);
-        turnOffButton.addActionListener(e -> {
-            System.out.println("turnOffButton being clicked");
+        changeBGMButton.addActionListener(e -> {
+            System.out.println("changeBGMButton being clicked");
             //
         });
-        add(turnOffButton);
+        add(changeBGMButton);
     }
 
     public void addbackButton() {
         backButton = new JButton("Back");
         backButton.setFont(new Font("Serif", Font.BOLD, 16));
         backButton.setFocusable(false);
-        backButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 4 + buttonHeight * 4, buttonWidth,
+        backButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
                 buttonHeight);
         backButton.addActionListener(e -> {
             System.out.println("backButton being clicked");

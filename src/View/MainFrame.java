@@ -18,7 +18,8 @@ public class MainFrame extends JFrame {
     private JButton loadButton;
     private JButton settingsButton;
 
-    private JLabel statusLabel;
+    private JLabel playerLabel;
+    private JLabel roundLabel;
 
     private Chessboard chessboard;
 
@@ -44,7 +45,8 @@ public class MainFrame extends JFrame {
         addSaveButton();
         addLoadButton();
         addSettingsButton();
-        addStatusLabel();
+        addPlayerLabel();
+        addRoundLabel();
         addChessboard();
     }
 
@@ -52,7 +54,7 @@ public class MainFrame extends JFrame {
         restartButton = new JButton("RESTART");
         restartButton.setFont(new Font("Monaco", Font.BOLD, 17));
         restartButton.setFocusable(false);
-        restartButton.setBounds(30 + 7 * 70 + 55, 80, buttonWidth,
+        restartButton.setBounds(30 + 7 * 70 + 55, 80 + 50, buttonWidth,
                 buttonHeight);
         restartButton.addActionListener(e -> {
             System.out.println("restartButton being clicked");
@@ -65,7 +67,7 @@ public class MainFrame extends JFrame {
         undoButton = new JButton("UNDO");
         undoButton.setFont(new Font("Monaco", Font.BOLD, 17));
         undoButton.setFocusable(false);
-        undoButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight + 30, buttonWidth,
+        undoButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight + 50 * 2, buttonWidth,
                 buttonHeight);
         undoButton.addActionListener(e -> {
             System.out.println("undoButton being clicked");
@@ -78,7 +80,7 @@ public class MainFrame extends JFrame {
         saveButton = new JButton("SAVE");
         saveButton.setFont(new Font("Monaco", Font.BOLD, 17));
         saveButton.setFocusable(false);
-        saveButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 2 + 30 * 2, buttonWidth,
+        saveButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 2 + 50 * 3, buttonWidth,
                 buttonHeight);
         saveButton.addActionListener(e -> {
             System.out.println("saveButton being clicked");
@@ -91,7 +93,7 @@ public class MainFrame extends JFrame {
         loadButton = new JButton("LOAD");
         loadButton.setFont(new Font("Monaco", Font.BOLD, 17));
         loadButton.setFocusable(false);
-        loadButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 3 + 30 * 3, buttonWidth,
+        loadButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 3 + 50 * 4, buttonWidth,
                 buttonHeight);
         loadButton.addActionListener(e -> {
             System.out.println("loadButton being clicked");
@@ -110,18 +112,25 @@ public class MainFrame extends JFrame {
         settingsButton.setBorderPainted(false);
         settingsButton.addActionListener(e -> {
             System.out.println("settingsButton being clicked");
-            new SettingsFrame(300, 500);
+            new SettingsFrame(300, 400);
         });
         add(settingsButton);
     }
 
-    private void addStatusLabel() {
-        statusLabel = new JLabel("It is BLUE's turn!\n (Round 1)"); // Get changed every move in controller using
-                                                                    // setText()
-        statusLabel.setBounds(30 + 7 * 70 + 30, 30, 300, 50);
-        statusLabel.setHorizontalTextPosition(JLabel.CENTER);
-        statusLabel.setFont(new Font("Comic Sans", Font.BOLD, 18));
-        add(statusLabel);
+    private void addPlayerLabel() {
+        playerLabel = new JLabel("It is BLUE's turn!"); // Get changed every move in controller using setText()
+        playerLabel.setBounds(30 + 7 * 70 + 70, 30, 300, 50);
+        playerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        playerLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
+        add(playerLabel);
+    }
+
+    private void addRoundLabel() {
+        playerLabel = new JLabel("Round 1"); // Get changed every move in controller using setText()
+        playerLabel.setBounds(30 + 7 * 70 + 110, 60, 300, 50);
+        playerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        playerLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
+        add(playerLabel);
     }
 
     private void addChessboard() {
