@@ -26,9 +26,10 @@ public class MainFrame extends JFrame {
     private Icon settingsIcon;
     private ImageIcon jungleIcon;
 
-    public MainFrame(int frameWidth, int frameHeight) {
+    public MainFrame(int frameWidth, int frameHeight, ImageIcon jungleIcon) {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
+        this.jungleIcon = jungleIcon;
         setTitle("Jungle_CS109");
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);
@@ -37,7 +38,6 @@ public class MainFrame extends JFrame {
         setVisible(true);
         setResizable(false);
         getContentPane().setBackground(Color.LIGHT_GRAY); // Change soon
-        jungleIcon = new ImageIcon("resource/jungleIcon.png");
         setIconImage(jungleIcon.getImage());
 
         addRestartButton();
@@ -112,7 +112,7 @@ public class MainFrame extends JFrame {
         settingsButton.setBorderPainted(false);
         settingsButton.addActionListener(e -> {
             System.out.println("settingsButton being clicked");
-            new SettingsFrame(300, 400);
+            new SettingsFrame(jungleIcon);
         });
         add(settingsButton);
     }

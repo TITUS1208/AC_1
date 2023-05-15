@@ -2,10 +2,9 @@ package View;
 
 import javax.swing.*;
 import java.awt.Font;
+import java.awt.Image;
 
-public class SettingsFrame extends JFrame {
-    private final int frameWidth;
-    private final int frameHeight;
+public class SettingsFrame extends JDialog {
     private final int buttonWidth = 190;
     private final int buttonHeight = 60;
 
@@ -19,11 +18,10 @@ public class SettingsFrame extends JFrame {
 
     private ImageIcon jungleIcon;
 
-    public SettingsFrame(int frameWidth, int frameHeight) {
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
+    public SettingsFrame(ImageIcon jungleIcon) {
+        this.jungleIcon = jungleIcon;
         setTitle("Jungle_CS109");
-        setSize(frameWidth, frameHeight);
+        setSize(300, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(null);
@@ -44,7 +42,7 @@ public class SettingsFrame extends JFrame {
         changeThemeButton = new JButton("Change Theme");
         changeThemeButton.setFont(new Font("Serif", Font.BOLD, 16));
         changeThemeButton.setFocusable(false);
-        changeThemeButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 + buttonHeight, buttonWidth,
+        changeThemeButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 + buttonHeight, buttonWidth,
                 buttonHeight);
         changeThemeButton.addActionListener(e -> {
             System.out.println("changeThemeButton being clicked");
@@ -85,7 +83,7 @@ public class SettingsFrame extends JFrame {
         changeBGMButton = new JButton("Change BGM");
         changeBGMButton.setFont(new Font("Serif", Font.BOLD, 16));
         changeBGMButton.setFocusable(false);
-        changeBGMButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 2 + buttonHeight * 2, buttonWidth,
+        changeBGMButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 2 + buttonHeight * 2, buttonWidth,
                 buttonHeight);
         changeBGMButton.addActionListener(e -> {
             System.out.println("changeBGMButton being clicked");
@@ -98,7 +96,7 @@ public class SettingsFrame extends JFrame {
         backButton = new JButton("Back");
         backButton.setFont(new Font("Serif", Font.BOLD, 16));
         backButton.setFocusable(false);
-        backButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
+        backButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
                 buttonHeight);
         backButton.addActionListener(e -> {
             System.out.println("backButton being clicked");
@@ -109,7 +107,7 @@ public class SettingsFrame extends JFrame {
 
     private void addTitleLabel() {
         titleLabel = new JLabel("SETTINGS");
-        titleLabel.setBounds(frameWidth / 2 - 55, 20, 200, 50);
+        titleLabel.setBounds(300 / 2 - 55, 20, 200, 50);
         titleLabel.setHorizontalTextPosition(JLabel.CENTER);
         titleLabel.setFont(new Font("Comic Sans", Font.BOLD, 18));
         add(titleLabel);
