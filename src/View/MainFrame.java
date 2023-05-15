@@ -105,7 +105,6 @@ public class MainFrame extends JFrame {
         settingsButton = new JButton(settingsIcon);
         settingsButton.setFocusable(false);
         settingsButton.setBounds(0, 0, 36, 36);
-
         settingsButton.setOpaque(false);
         settingsButton.setContentAreaFilled(false);
         settingsButton.setBorderPainted(false);

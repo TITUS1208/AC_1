@@ -13,10 +13,8 @@ public class Main {
             // MainFrame mainFrame = new MainFrame(30 + 7 * 70 + 30 + 250 + 30, 30 + 9 * 70
             // + 30);
             // SettingsFrame settingsFrame = new SettingsFrame(300, 500);
-            BeginFrame beginFrame = new BeginFrame(300, 200);
+            BeginFrame beginFrame = new BeginFrame(300, 220);
 
-
-//
             // GameController gameController = new
             // GameController(mainFrame.getChessboardComponent(), new Chessboard());
         });
