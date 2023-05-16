@@ -103,7 +103,7 @@ public class MainFrame extends JFrame {
     }
 
     public void addSettingsButton() {
-        settingsIcon = new ImageIcon("resource/settingsIcon.png");
+        settingsIcon = new ImageIcon("resource/Icon/settingsIcon.png");
         settingsButton = new JButton(settingsIcon);
         settingsButton.setFocusable(false);
         settingsButton.setBounds(0, 0, 36, 36);
@@ -126,11 +126,11 @@ public class MainFrame extends JFrame {
     }
 
     private void addRoundLabel() {
-        playerLabel = new JLabel("Round 1"); // Get changed every move in controller using setText()
-        playerLabel.setBounds(30 + 7 * 70 + 110, 60, 300, 50);
-        playerLabel.setHorizontalTextPosition(JLabel.CENTER);
-        playerLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
-        add(playerLabel);
+        roundLabel = new JLabel("Round 1"); // Get changed every move in controller using setText()
+        roundLabel.setBounds(30 + 7 * 70 + 110, 60, 300, 50);
+        roundLabel.setHorizontalTextPosition(JLabel.CENTER);
+        roundLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
+        add(roundLabel);
     }
 
     private void addChessboard() {

@@ -35,7 +35,7 @@ public class BeginFrame extends JFrame {
         setVisible(true);
         setResizable(false);
         getContentPane().setBackground(Color.LIGHT_GRAY); // Change soon
-        jungleIcon = new ImageIcon("resource/jungleIcon.png");
+        jungleIcon = new ImageIcon("resource/Icon/jungleIcon.png");
         setIconImage(jungleIcon.getImage());
 
         addBeginButton();
