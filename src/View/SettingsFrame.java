@@ -35,14 +35,25 @@ public class SettingsFrame extends JDialog {
         addTurnOnOffButton();
         addbackButton();
         addTitleLabel();
+
+        layoutControl();
+    }
+
+    public void layoutControl() {
+        changeThemeButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 + buttonHeight, buttonWidth,
+                buttonHeight);
+        turnOnOffButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 2 + buttonHeight * 2, buttonWidth,
+                buttonHeight);
+        backButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
+                buttonHeight);
+        titleLabel.setBounds(300 / 2 - 55, 20, 200, 50);
     }
 
     public void addChangeThemeButton() {
         changeThemeButton = new JButton("Change Theme");
         changeThemeButton.setFont(new Font("Serif", Font.BOLD, 16));
         changeThemeButton.setFocusable(false);
-        changeThemeButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 + buttonHeight, buttonWidth,
-                buttonHeight);
+
         changeThemeButton.addActionListener(e -> {
             System.out.println("changeThemeButton being clicked");
             // Change theme here
@@ -54,8 +65,7 @@ public class SettingsFrame extends JDialog {
         turnOnOffButton = new JButton("Turn OFF BGM");
         turnOnOffButton.setFont(new Font("Serif", Font.BOLD, 16));
         turnOnOffButton.setFocusable(false);
-        turnOnOffButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 2 + buttonHeight * 2, buttonWidth,
-                buttonHeight);
+
         turnOnOffButton.addActionListener(e -> {
             if (count % 2 == 0) {
                 System.out.println("BGM is turned off");
@@ -76,8 +86,7 @@ public class SettingsFrame extends JDialog {
         backButton = new JButton("Back");
         backButton.setFont(new Font("Serif", Font.BOLD, 16));
         backButton.setFocusable(false);
-        backButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
-                buttonHeight);
+
         backButton.addActionListener(e -> {
             System.out.println("backButton being clicked");
             this.setVisible(false);
@@ -87,8 +96,8 @@ public class SettingsFrame extends JDialog {
 
     private void addTitleLabel() {
         titleLabel = new JLabel("SETTINGS");
-        titleLabel.setBounds(300 / 2 - 55, 20, 200, 50);
         titleLabel.setHorizontalTextPosition(JLabel.CENTER);
+        titleLabel.setVerticalTextPosition(JLabel.CENTER);
         titleLabel.setFont(new Font("Comic Sans", Font.BOLD, 18));
         add(titleLabel);
     }

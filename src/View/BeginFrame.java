@@ -37,14 +37,21 @@ public class BeginFrame extends JFrame {
 
         addBeginButton();
         addCheckbox();
+
+        layoutControl();
+    }
+
+    public void layoutControl() {
+        beginButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, buttonHeight - 15, buttonWidth,
+                buttonHeight);
+        checkbox.setBounds(frameWidth / 2 - buttonWidth / 2 - 20, buttonHeight + 50, 250, 50);
     }
 
     public void addBeginButton() {
         beginButton = new JButton("Begin");
         beginButton.setFont(new Font("Monaco", Font.BOLD, 17));
         beginButton.setFocusable(false);
-        beginButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, buttonHeight - 15, buttonWidth,
-                buttonHeight);
+
         beginButton.addActionListener(e -> {
             System.out.println("beginButton being clicked");
             if (isChecked) {
@@ -65,11 +72,9 @@ public class BeginFrame extends JFrame {
     public void addCheckbox() {
         checkbox = new JCheckBox("Agree to the Terms & Conditions");
         checkbox.setFocusable(false);
-        checkbox.setBounds(frameWidth / 2 - buttonWidth / 2 - 20, buttonHeight + 50, 250, 50);
         checkbox.setOpaque(false);
         checkbox.setContentAreaFilled(false);
         checkbox.setBorderPainted(false);
-        add(checkbox);
         checkbox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == 1) {
@@ -79,5 +84,6 @@ public class BeginFrame extends JFrame {
                 }
             }
         });
+        add(checkbox);
     }
 }

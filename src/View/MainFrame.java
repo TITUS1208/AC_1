@@ -48,17 +48,33 @@ public class MainFrame extends JFrame {
         addPlayerLabel();
         addRoundLabel();
         addChessboard();
+
+        layoutControl();
+    }
+
+    public void layoutControl() {
+        restartButton.setBounds(30 + 7 * 70 + 55, 80 + 50, buttonWidth,
+                buttonHeight);
+        undoButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight + 50 * 2, buttonWidth,
+                buttonHeight);
+        saveButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 2 + 50 * 3, buttonWidth,
+                buttonHeight);
+        loadButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 3 + 50 * 4, buttonWidth,
+                buttonHeight);
+        settingsButton.setBounds(0, 0, 36, 36);
+        playerLabel.setBounds(30 + 7 * 70 + 70, 30, 300, 50);
+        roundLabel.setBounds(30 + 7 * 70 + 110, 60, 300, 50);
+        // chessboard.setBounds(EXIT_ON_CLOSE, ABORT, WIDTH, HEIGHT);
     }
 
     public void addRestartButton() {
         restartButton = new JButton("RESTART");
         restartButton.setFont(new Font("Monaco", Font.BOLD, 17));
         restartButton.setFocusable(false);
-        restartButton.setBounds(30 + 7 * 70 + 55, 80 + 50, buttonWidth,
-                buttonHeight);
+
         restartButton.addActionListener(e -> {
             System.out.println("restartButton being clicked");
-            // Prompts restart action here
+            // Prompts restart action here via controller
         });
         add(restartButton);
     }
@@ -67,11 +83,10 @@ public class MainFrame extends JFrame {
         undoButton = new JButton("UNDO");
         undoButton.setFont(new Font("Monaco", Font.BOLD, 17));
         undoButton.setFocusable(false);
-        undoButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight + 50 * 2, buttonWidth,
-                buttonHeight);
+
         undoButton.addActionListener(e -> {
             System.out.println("undoButton being clicked");
-            // Prompts undo action here
+            // Prompts undo action here via controller
         });
         add(undoButton);
     }
@@ -80,11 +95,15 @@ public class MainFrame extends JFrame {
         saveButton = new JButton("SAVE");
         saveButton.setFont(new Font("Monaco", Font.BOLD, 17));
         saveButton.setFocusable(false);
-        saveButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 2 + 50 * 3, buttonWidth,
-                buttonHeight);
+
         saveButton.addActionListener(e -> {
             System.out.println("saveButton being clicked");
-            // Prompts save action here
+            String fileName = JOptionPane.showInputDialog("File's name to save: ");
+            while (fileName.equals("")) {
+                JOptionPane.showMessageDialog(this, "File's name must not be blank.");
+                fileName = JOptionPane.showInputDialog("File's name to save:");
+            }
+            // Call save method from controller
         });
         add(saveButton);
     }
@@ -93,11 +112,10 @@ public class MainFrame extends JFrame {
         loadButton = new JButton("LOAD");
         loadButton.setFont(new Font("Monaco", Font.BOLD, 17));
         loadButton.setFocusable(false);
-        loadButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 3 + 50 * 4, buttonWidth,
-                buttonHeight);
+
         loadButton.addActionListener(e -> {
             System.out.println("loadButton being clicked");
-            // Prompts undo action here
+            // Prompts load action here
         });
         add(loadButton);
     }
@@ -106,7 +124,6 @@ public class MainFrame extends JFrame {
         settingsIcon = new ImageIcon("resource/Icon/settingsIcon.png");
         settingsButton = new JButton(settingsIcon);
         settingsButton.setFocusable(false);
-        settingsButton.setBounds(0, 0, 36, 36);
         settingsButton.setOpaque(false);
         settingsButton.setContentAreaFilled(false);
         settingsButton.setBorderPainted(false);
@@ -119,16 +136,16 @@ public class MainFrame extends JFrame {
 
     private void addPlayerLabel() {
         playerLabel = new JLabel("It is BLUE's turn!"); // Get changed every move in controller using setText()
-        playerLabel.setBounds(30 + 7 * 70 + 70, 30, 300, 50);
         playerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        playerLabel.setVerticalTextPosition(JLabel.CENTER);
         playerLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
         add(playerLabel);
     }
 
     private void addRoundLabel() {
         roundLabel = new JLabel("Round 1"); // Get changed every move in controller using setText()
-        roundLabel.setBounds(30 + 7 * 70 + 110, 60, 300, 50);
         roundLabel.setHorizontalTextPosition(JLabel.CENTER);
+        playerLabel.setVerticalTextPosition(JLabel.CENTER);
         roundLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
         add(roundLabel);
     }

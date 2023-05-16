@@ -6,8 +6,6 @@ import View.BeginFrame;
 
 public class Main {
     public static void main(String[] args) {
-        // Board board = new Board();
-        // System.out.println(board);
         SwingUtilities.invokeLater(() -> {
             new BeginFrame(300, 220);
             AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
