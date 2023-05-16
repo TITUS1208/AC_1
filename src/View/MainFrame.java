@@ -3,6 +3,7 @@ package View;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.io.File;
 
 import javax.swing.*;
 
@@ -20,6 +21,8 @@ public class MainFrame extends JFrame {
 
     private JLabel playerLabel;
     private JLabel roundLabel;
+
+    private JFileChooser loadFC;
 
     private Chessboard chessboard;
 
@@ -115,7 +118,14 @@ public class MainFrame extends JFrame {
 
         loadButton.addActionListener(e -> {
             System.out.println("loadButton being clicked");
-            // Prompts load action here
+            loadFC = new JFileChooser("./src/Save");
+            loadFC.setDialogTitle("Load a file");
+            int temp = loadFC.showOpenDialog(this);
+            if (temp == JFileChooser.APPROVE_OPTION) {
+                String path = loadFC.getSelectedFile().getAbsolutePath();
+                // System.out.println(path);
+                // Call load method from controller
+            }
         });
         add(loadButton);
     }
