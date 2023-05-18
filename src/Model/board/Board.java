@@ -113,6 +113,11 @@ public class Board {
     public Player blackPlayer(){
         return this.blackPlayer;
     }
+    public Collection<Move> getAllPossibleMoves(){
+        Collection<Move> allLegalmoves = this.whitePlayer.getLegalMoves();
+        allLegalmoves.addAll(this.blackPlayer.getLegalMoves());
+        return allLegalmoves;
+    }
 
     public Player getTurn(){
         return turn;

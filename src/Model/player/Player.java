@@ -29,6 +29,9 @@ public abstract class Player {
     public boolean isMoveLegal(final Move move){
         return this.legalMoves.contains(move);
     }
+    public Collection<Move> getLegalMoves(){
+        return legalMoves;
+    }
 
     //TODO
     public MoveTransition makeMove(Move move){

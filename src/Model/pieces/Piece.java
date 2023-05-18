@@ -95,6 +95,15 @@ public class Piece {
         return legalMoves;
     }
 
+    public Piece movePiece(Move move){
+        return new Piece(move.getDestinationCoordinate(), move.getMovingPiece().getPieceAlliance(), move.getMovingPiece().getRank(),move.getMovingPiece().getName());
+    }
+
+    public boolean equals(Piece piece){
+        return this.getPieceAlliance() == piece.getPieceAlliance() && this.getName().equals(piece.getName()) &&
+                this.getRank() == piece.getRank() && this.getPiecePosition() == piece.getPiecePosition();
+    }
+
     private boolean mouseValidMove(Piece pieceOnDestination){
         if (!inWater() && pieceOnDestination.getRank() == 8){
             return true;
