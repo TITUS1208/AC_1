@@ -23,6 +23,11 @@ public class Piece {
     }
 
     public List<Move> possibleMoves(final Board board){
+
+        //TODO
+        System.out.printf("Checking: %s (rank %d)\n", this, rank);
+
+
         int candidateMoveCoordinate;
         List<Move> legalMoves = new ArrayList<>();
         for (int currentOffset : MOVE_OFFSET){
@@ -36,13 +41,6 @@ public class Piece {
                 }
             }
 
-            //check rank
-
-            //check exceptions
-
-            //check water
-
-            //check if the tile is empty
             if (candidateMoveCoordinate >= 0 && candidateMoveCoordinate < 63){
                 Tile candidateTile = board.getTile(candidateMoveCoordinate);
                 Terrain candidateTerrain = BoardUtils.TERRAIN_BOARD.get(candidateMoveCoordinate);
@@ -52,6 +50,36 @@ public class Piece {
                 boolean isValid = false;
                 if(candidateTile.getPiece() == null){ ////////////NO PIECE IN THE TILE//////////////////
                     if (rank != 1 && candidateTerrain.isWater()){
+                        if (rank == 7 || rank == 6){
+                            if ((BoardUtils.IN_LEFT_WATER(candidateMoveCoordinate) && !BoardUtils.PIECE_IN_TILES(board, BoardUtils.LEFT_WATER))){
+                                System.out.println("Mouse is not in water (line 57)");
+                                candidateMoveCoordinate = jump(board, currentOffset, position);
+                                candidateTile = board.getTile(candidateMoveCoordinate);
+                                if (candidateTile.getPiece() == null){
+                                    legalMoves.add(new Move.NormalMove(board, board.getTile(this.position).getPiece(), candidateMoveCoordinate));
+                                } else if (candidateTile.getPiece().getRank() <= this.rank){
+                                    legalMoves.add(new Move.AttackMove(
+                                            board,
+                                            board.getTile(this.position).getPiece(),
+                                            candidateMoveCoordinate,
+                                            board.getTile(candidateMoveCoordinate).getPiece()));
+                                }
+                            }
+                            if ((BoardUtils.IN_RIGHT_WATER(candidateMoveCoordinate) && !BoardUtils.PIECE_IN_TILES(board, BoardUtils.RIGHT_WATER))){
+                                System.out.println("Mouse is not in water (line 57)");
+                                candidateMoveCoordinate = jump(board, currentOffset, position);
+                                candidateTile = board.getTile(candidateMoveCoordinate);
+                                if (candidateTile.getPiece() == null){
+                                    legalMoves.add(new Move.NormalMove(board, board.getTile(this.position).getPiece(), candidateMoveCoordinate));
+                                } else if (candidateTile.getPiece().getRank() <= this.rank){
+                                    legalMoves.add(new Move.AttackMove(
+                                            board,
+                                            board.getTile(this.position).getPiece(),
+                                            candidateMoveCoordinate,
+                                            board.getTile(candidateMoveCoordinate).getPiece()));
+                                }
+                            }
+                        }
                         continue;
                     }
                     if (candidateTerrain.isDen() && this.getPieceAlliance() == candidateTerrain.getAlliance()){
@@ -63,23 +91,43 @@ public class Piece {
 
 
                 } else{ ///////////////PIECE IN THE TILE////////////////
+                    //TODO
+                    System.out.println("piece in tile");
+
                     Alliance destinationTilePieceAlliance = candidateTile.getPiece().getPieceAlliance();
                     Piece pieceOnDestination = candidateTile.getPiece();
 
                     if (this.alliance != destinationTilePieceAlliance){
                         if(this.getRank() == 1){ //mouse
+
+                            System.out.println("is mouse");
+
                             if(mouseValidMove(pieceOnDestination)){
-                                //legalMoves.add(new Move());
+                                legalMoves.add(new Move.AttackMove(
+                                        board,
+                                        board.getTile(this.position).getPiece(),
+                                        candidateMoveCoordinate,
+                                        board.getTile(candidateMoveCoordinate).getPiece()));
+
                                 isValid = true;
                             }
+
                         } else if (this.getRank() == 6 || this.getRank() == 7){ //tiger and lion
                             if(lionValidMove(board, currentOffset,position)){
-                                //legalMoves.add(new Move());
+                                legalMoves.add(new Move.AttackMove(
+                                        board,
+                                        board.getTile(this.position).getPiece(),
+                                        candidateMoveCoordinate,
+                                        board.getTile(candidateMoveCoordinate).getPiece()));
                                 isValid = true;
                             }
                         } else{
                             if(generalValidMove(board, currentOffset, position)){
-                                //legalMoves.add(new Move());
+                                legalMoves.add(new Move.AttackMove(
+                                        board,
+                                        board.getTile(this.position).getPiece(),
+                                        candidateMoveCoordinate,
+                                        board.getTile(candidateMoveCoordinate).getPiece()));
                                 isValid = true;
                             }
                         }
@@ -106,11 +154,23 @@ public class Piece {
 
     private boolean mouseValidMove(Piece pieceOnDestination){
         if (!inWater() && pieceOnDestination.getRank() == 8){
+            System.out.println("is not in water and is elephant");
             return true;
         } else if (pieceOnDestination.inTrap()){
             return true;
         }
         return false;
+    }
+
+    private int jump(Board board, int currentOffset, int position){
+        //int counter = 1;
+        int candidatePosition = position + currentOffset;
+
+        while (BoardUtils.TERRAIN_BOARD.get(candidatePosition).isWater()){
+            candidatePosition += currentOffset;
+        }
+
+        return candidatePosition;
     }
 
     private boolean lionValidMove(Board board, int currentOffset, int position){
@@ -136,10 +196,14 @@ public class Piece {
 
         ///////////////////jump across water////////////////////////
         while(BoardUtils.TERRAIN_BOARD.get(candidatePosition).isWater()){
-            counter++;
+            /*counter++;
             currentOffset *= counter;
             candidatePosition = position + currentOffset;
+             */
+            candidatePosition += currentOffset;
         }
+
+
 
         if (this.getRank() >= board.getTile(candidatePosition).getPiece().getRank()){
             return true;
@@ -210,6 +274,37 @@ public class Piece {
     @Override
     public String toString(){
         return String.valueOf(getName().charAt(0));
+    }
+
+    public List<Integer> getMoves(Board board){
+        ArrayList<Integer> positions = new ArrayList<>();
+        for (Move move : possibleMoves(board)){
+            positions.add(move.getDestinationCoordinate());
+        }
+        return positions;
+    }
+
+    public void printPossibleMoves(Board board){
+        ArrayList<Integer> moves = new ArrayList<>();
+        moves.addAll(getMoves(board));
+        for (int i : moves){
+            System.out.println(i);
+        }
+        for (int i = 0; i < BoardUtils.BOARD_SIZE; i++){
+            boolean isValidMove = false;
+            for (int j : moves) {
+                if (i == j) isValidMove = true;
+            }
+            if (isValidMove){
+                System.out.print("o  ");
+            } else{
+                System.out.print("-  ");
+            }
+            if (i % BoardUtils.TILES_PER_ROW == 6 && i != 0){
+                System.out.println("");
+            }
+        }
+
     }
 }
 /*

@@ -12,8 +12,10 @@ public class Main {
 
             Board.Builder builder = new Board.Builder();
             Board board = new Board(builder);
-            System.out.println(board);
-            System.out.println(BoardUtils.TERRAIN_BOARD.get(10));
+            board = Board.testBoard1();
+            board.getTile(16).getPiece().printPossibleMoves(board);
+            //System.out.println(board);
+            //System.out.println(BoardUtils.TERRAIN_BOARD.get(10));
 
             // GameController gameController = new
             // GameController(mainFrame.getChessboardComponent(), new Chessboard());

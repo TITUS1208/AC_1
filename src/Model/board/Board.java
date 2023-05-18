@@ -152,6 +152,67 @@ public class Board {
         return builder.toString();
     }
 
+
+    public static Board testBoard1(){
+        Builder builder = new Builder();
+        builder.setPiece(new Piece(36, Alliance.WHITE, 1, "Rat"));
+        builder.setPiece(new Piece(12, Alliance.WHITE, 2, "Cat"));
+        builder.setPiece(new Piece(9, Alliance.WHITE, 3, "Dog"));
+        builder.setPiece(new Piece(18, Alliance.WHITE, 4, "Wolf"));
+        builder.setPiece(new Piece(2, Alliance.WHITE, 5, "Leopard"));
+        builder.setPiece(new Piece(6, Alliance.WHITE, 6, "Tiger"));
+        builder.setPiece(new Piece(16, Alliance.WHITE, 7, "Lion"));
+        builder.setPiece(new Piece(20, Alliance.WHITE, 8, "Elephant"));
+
+
+        builder.setPiece(new Piece(29, Alliance.BLACK, 1, "Rat"));
+        builder.setPiece(new Piece(50, Alliance.BLACK, 2, "Cat"));
+        builder.setPiece(new Piece(54, Alliance.BLACK, 3, "Dog"));
+        builder.setPiece(new Piece(44, Alliance.BLACK, 4, "Wolf"));
+        builder.setPiece(new Piece(46, Alliance.BLACK, 5, "Leopard"));
+        builder.setPiece(new Piece(56, Alliance.BLACK, 6, "Tiger"));
+        builder.setPiece(new Piece(62, Alliance.BLACK, 7, "Lion"));
+        builder.setPiece(new Piece(35, Alliance.BLACK, 8, "Elephant"));
+        /*
+        add more
+         */
+        builder.setTurn(Alliance.WHITE);
+        return builder.build();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static class Builder{
         Map<Integer, Piece> boardConfig;
         Alliance turn;

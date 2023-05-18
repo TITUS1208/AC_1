@@ -26,14 +26,20 @@ public class BoardUtils {
 
     public static boolean IN_LEFT_WATER(int position){
         for(int i : LEFT_WATER){
-            if (i == position) return true;
+            if (i == position) {
+                System.out.println("Piece in left river (BoardUtils 30)");
+                return true;
+            }
         }
         return false;
     }
 
     public static boolean IN_RIGHT_WATER(int position){
         for(int i : RIGHT_WATER){
-            if (i == position) return true;
+            if (i == position) {
+                System.out.println("Piece in right river (BoardUtils 40)");
+                return true;
+            }
         }
         return false;
     }
@@ -41,6 +47,7 @@ public class BoardUtils {
     public static boolean PIECE_IN_TILES(Board board, int[] positions){
         for(int i : positions){
             if (board.getTile(i).getPiece() != null){
+                System.out.println("Piece in river (BoardUtils 50)");
                 return true;
             }
         }
