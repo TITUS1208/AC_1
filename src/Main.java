@@ -1,30 +1,23 @@
 import javax.swing.SwingUtilities;
 
+import Model.AudioPlayer;
 import Model.board.*;
 import View.BeginFrame;
-import View.SettingsFrame;
-import View.MainFrame;
 
 public class Main {
     public static void main(String[] args) {
-        // Board board = new Board();
-        // System.out.println(board);
         SwingUtilities.invokeLater(() -> {
-            // MainFrame mainFrame = new MainFrame(30 + 7 * 70 + 30 + 250 + 30, 30 + 9 * 70
-            // + 30);
-            // SettingsFrame settingsFrame = new SettingsFrame(300, 500);
-            BeginFrame beginFrame = new BeginFrame(300, 200);
-            
+            new BeginFrame(300, 220);
+            AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
 
             Board.Builder builder = new Board.Builder();
             Board board = new Board(builder);
-            System.out.println(board) ;
+            System.out.println(board);
             System.out.println(BoardUtils.TERRAIN_BOARD.get(10));
-    
 
-//
             // GameController gameController = new
             // GameController(mainFrame.getChessboardComponent(), new Chessboard());
+
         });
     }
 }

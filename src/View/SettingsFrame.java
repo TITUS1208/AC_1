@@ -1,105 +1,92 @@
 package View;
 
 import javax.swing.*;
+
+import Model.AudioPlayer;
 import java.awt.Font;
 
-public class SettingsFrame extends JFrame {
-    private final int frameWidth;
-    private final int frameHeight;
+public class SettingsFrame extends JDialog {
     private final int buttonWidth = 190;
     private final int buttonHeight = 60;
 
     private JButton changeThemeButton;
     // private JButton turnOnButton;
     // private JButton turnOffButton;
-    private JButton changeBGMButton;
+    private JButton turnOnOffButton;
     private JButton backButton;
 
     private JLabel titleLabel;
 
     private ImageIcon jungleIcon;
+    int count = 2;
 
-    public SettingsFrame(int frameWidth, int frameHeight) {
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
+    public SettingsFrame(ImageIcon jungleIcon) {
+        this.jungleIcon = jungleIcon;
         setTitle("Jungle_CS109");
-        setSize(frameWidth, frameHeight);
+        setSize(300, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(null);
         setVisible(true);
         setResizable(false);
-        jungleIcon = new ImageIcon("resource/jungleIcon.png");
         setIconImage(jungleIcon.getImage());
 
         addChangeThemeButton();
-        // addTurnOnButton();
-        // addTurnOffButton();
-        addChangeBGMButton();
+        addTurnOnOffButton();
         addbackButton();
         addTitleLabel();
+
+        layoutControl();
+    }
+
+    public void layoutControl() {
+        changeThemeButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 + buttonHeight, buttonWidth,
+                buttonHeight);
+        turnOnOffButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 2 + buttonHeight * 2, buttonWidth,
+                buttonHeight);
+        backButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
+                buttonHeight);
+        titleLabel.setBounds(300 / 2 - 55, 20, 200, 50);
     }
 
     public void addChangeThemeButton() {
         changeThemeButton = new JButton("Change Theme");
         changeThemeButton.setFont(new Font("Serif", Font.BOLD, 16));
         changeThemeButton.setFocusable(false);
-        changeThemeButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 + buttonHeight, buttonWidth,
-                buttonHeight);
+
         changeThemeButton.addActionListener(e -> {
             System.out.println("changeThemeButton being clicked");
-            // Change BGM here
+            // Change theme here
         });
         add(changeThemeButton);
     }
 
-    // public void addTurnOnButton() {
-    // turnOnButton = new JButton("Turn On BGM");
-    // turnOnButton.setFont(new Font("Serif", Font.BOLD, 16));
-    // turnOnButton.setFocusable(false);
-    // turnOnButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 2 +
-    // buttonHeight * 2, buttonWidth,
-    // buttonHeight);
-    // turnOnButton.addActionListener(e -> {
-    // System.out.println("turnOnButton being clicked");
-    // //
-    // });
-    // add(turnOnButton);
-    // }
+    public void addTurnOnOffButton() {
+        turnOnOffButton = new JButton("Turn OFF BGM");
+        turnOnOffButton.setFont(new Font("Serif", Font.BOLD, 16));
+        turnOnOffButton.setFocusable(false);
 
-    // public void addTurnOffButton() {
-    // turnOffButton = new JButton("Turn Off BGM");
-    // turnOffButton.setFont(new Font("Serif", Font.BOLD, 16));
-    // turnOffButton.setFocusable(false);
-    // turnOffButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 3 +
-    // buttonHeight * 3, buttonWidth,
-    // buttonHeight);
-    // turnOffButton.addActionListener(e -> {
-    // System.out.println("turnOffButton being clicked");
-    // //
-    // });
-    // add(turnOffButton);
-    // }
-
-    public void addChangeBGMButton() {
-        changeBGMButton = new JButton("Change BGM");
-        changeBGMButton.setFont(new Font("Serif", Font.BOLD, 16));
-        changeBGMButton.setFocusable(false);
-        changeBGMButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 2 + buttonHeight * 2, buttonWidth,
-                buttonHeight);
-        changeBGMButton.addActionListener(e -> {
-            System.out.println("changeBGMButton being clicked");
-            //
+        turnOnOffButton.addActionListener(e -> {
+            if (count % 2 == 0) {
+                System.out.println("BGM is turned off");
+                turnOnOffButton.setText("Play BGM");
+                AudioPlayer.stopPlaying();
+            } else {
+                System.out.println("BGM is being played again");
+                turnOnOffButton.setText("Turn OFF BGM");
+                AudioPlayer.continuePlaying();
+                AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
+            }
+            count++;
         });
-        add(changeBGMButton);
+        add(turnOnOffButton);
     }
 
     public void addbackButton() {
         backButton = new JButton("Back");
         backButton.setFont(new Font("Serif", Font.BOLD, 16));
         backButton.setFocusable(false);
-        backButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
-                buttonHeight);
+
         backButton.addActionListener(e -> {
             System.out.println("backButton being clicked");
             this.setVisible(false);
@@ -109,8 +96,8 @@ public class SettingsFrame extends JFrame {
 
     private void addTitleLabel() {
         titleLabel = new JLabel("SETTINGS");
-        titleLabel.setBounds(frameWidth / 2 - 55, 20, 200, 50);
         titleLabel.setHorizontalTextPosition(JLabel.CENTER);
+        titleLabel.setVerticalTextPosition(JLabel.CENTER);
         titleLabel.setFont(new Font("Comic Sans", Font.BOLD, 18));
         add(titleLabel);
     }

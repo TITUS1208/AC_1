@@ -19,8 +19,6 @@ public class BeginFrame extends JFrame {
 
     private JCheckBox checkbox;
 
-    private JDialog agreeDialog;
-
     private boolean isChecked;
 
     public BeginFrame(int frameWidth, int frameHeight) {
@@ -34,28 +32,35 @@ public class BeginFrame extends JFrame {
         setVisible(true);
         setResizable(false);
         getContentPane().setBackground(Color.LIGHT_GRAY); // Change soon
-        jungleIcon = new ImageIcon("resource/jungleIcon.png");
+        jungleIcon = new ImageIcon("resource/Icon/jungleIcon.png");
         setIconImage(jungleIcon.getImage());
 
         addBeginButton();
         addCheckbox();
+
+        layoutControl();
+    }
+
+    public void layoutControl() {
+        beginButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, buttonHeight - 15, buttonWidth,
+                buttonHeight);
+        checkbox.setBounds(frameWidth / 2 - buttonWidth / 2 - 20, buttonHeight + 50, 250, 50);
     }
 
     public void addBeginButton() {
         beginButton = new JButton("Begin");
         beginButton.setFont(new Font("Monaco", Font.BOLD, 17));
         beginButton.setFocusable(false);
-        beginButton.setBounds(frameWidth / 2 - buttonWidth / 2 - 5, buttonHeight - 15, buttonWidth,
-                buttonHeight);
+
         beginButton.addActionListener(e -> {
             System.out.println("beginButton being clicked");
             if (isChecked) {
                 new MainFrame(30 + 7 * 70 + 30 + 250 + 30, 30 + 9 * 70
-                        + 30);
+                        + 30, jungleIcon);
                 this.setVisible(false);
-                agreeDialog.setVisible(false);
             } else {
-                addAgreeDialog();
+                JOptionPane.showMessageDialog(this, "Please agree to the Terms & Conditions!", "Jungle_CS109",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         });
         add(beginButton);
@@ -67,11 +72,9 @@ public class BeginFrame extends JFrame {
     public void addCheckbox() {
         checkbox = new JCheckBox("Agree to the Terms & Conditions");
         checkbox.setFocusable(false);
-        checkbox.setBounds(frameWidth / 2 - buttonWidth / 2 - 20, buttonHeight + 50, 250, 50);
         checkbox.setOpaque(false);
         checkbox.setContentAreaFilled(false);
         checkbox.setBorderPainted(false);
-        add(checkbox);
         checkbox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == 1) {
@@ -81,17 +84,6 @@ public class BeginFrame extends JFrame {
                 }
             }
         });
-    }
-
-    public void addAgreeDialog() {
-        agreeDialog = new JDialog();
-        agreeDialog.setTitle("Jungle_CS109");
-        // agreeDialog.setLayout(null);
-        agreeDialog.setIconImage(jungleIcon.getImage());
-        agreeDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        agreeDialog.setLocationRelativeTo(this);
-        agreeDialog.setSize(300, 120);
-        agreeDialog.add(new JLabel("     Please agree to the Terms & Conditions!"));
-        agreeDialog.setVisible(true);
+        add(checkbox);
     }
 }
