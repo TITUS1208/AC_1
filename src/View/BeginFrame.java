@@ -55,8 +55,8 @@ public class BeginFrame extends JFrame {
         beginButton.addActionListener(e -> {
             System.out.println("beginButton being clicked");
             if (isChecked) {
-                new MainFrame(30 + 7 * 70 + 30 + 250 + 30, 30 + 9 * 70
-                        + 30, jungleIcon);
+                new Table();
+                new MainFrame(30 + 7 * 70 + 30 + 250 + 30, 30 + 9 * 70 + 30, jungleIcon);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Please agree to the Terms & Conditions!", "Jungle_CS109",

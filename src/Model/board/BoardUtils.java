@@ -3,6 +3,8 @@ package Model.board;
 import Model.board.*;
 import Model.pieces.*;
 import Model.player.*;
+
+import java.awt.*;
 import java.util.List;
 
 
@@ -17,6 +19,10 @@ public class BoardUtils {
     public static final int TOP_DEN = 3;
     public static final int BOTTOM_DEN = 59;
     public static final List<Terrain> TERRAIN_BOARD = createTerrainBoard();
+
+    public static final Dimension OUTER_DIMENSION = new Dimension(600,600);
+    public static final Dimension CHESS_BOARD_DIMENSION = new Dimension(400,400);
+    public static final Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
 
 
 

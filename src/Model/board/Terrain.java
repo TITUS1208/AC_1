@@ -4,6 +4,8 @@ import Model.board.*;
 import Model.pieces.*;
 import Model.player.*;
 
+import java.awt.*;
+
 public class Terrain {
     private TileType tileType;
     private Alliance alliance;
@@ -39,5 +41,19 @@ public class Terrain {
 
     public boolean isTrap(){
         return tileType == TileType.TRAP;
+    }
+    public boolean isGrass(){ return tileType == TileType.GRASS;}
+
+    public Color getTileColor(){
+        if (isDen()){
+            return Color.YELLOW;
+        } else if (isTrap()){
+            return Color.PINK;
+        } else if (isWater()){
+            return Color.CYAN;
+        } else if (isGrass()){
+            return Color.GREEN;
+        }
+        return null;
     }
 }
