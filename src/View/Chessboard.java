@@ -35,8 +35,6 @@ public class Chessboard extends JPanel {
             boardTiles.add(tile);
             add(tile);
         }
-        setPreferredSize(BoardUtils.CHESS_BOARD_DIMENSION);
-        setVisible(true);
         validate();
     }
 
@@ -60,13 +58,12 @@ public class Chessboard extends JPanel {
         repaint();
     }
 
-
     private class TilePanel extends JPanel {
         private int tileNum;
 
         public TilePanel(Chessboard chessboard, int tileNum) {
-            super(new GridLayout());
             this.tileNum = tileNum;
+            setLayout(new GridLayout());
             setPreferredSize(BoardUtils.TILE_PANEL_DIMENSION);
             assignTileColor();
             assignPieceOnTile(chessBoard);
@@ -75,7 +72,7 @@ public class Chessboard extends JPanel {
                 public void mouseClicked(MouseEvent e) {
                     if (isLeftMouseButton(e)) {
                         if (selectedTile == null) {
-                            //first click --> select piece
+                            // first click --> select piece
                             selectedTile = chessBoard.getTile(tileNum);
                             selectedPiece = selectedTile.getPiece();
                             if (selectedPiece == null) {
@@ -84,11 +81,11 @@ public class Chessboard extends JPanel {
                             } else if (selectedPiece.getPieceAlliance() != chessBoard.getTurn().getAlliance()) {
                                 selectedTile = null;
                                 System.out.println("Cannot select enemy piece");
-                            } else{
+                            } else {
 
                             }
                         } else {
-                            //successful move
+                            // successful move
                             destinationTile = chessBoard.getTile(tileNum);
                             Move move = Move.CreateMove.createMove(chessBoard, selectedTile.getTileCoor(),
                                     destinationTile.getTileCoor());
@@ -144,22 +141,22 @@ public class Chessboard extends JPanel {
             destinationTile = null;
         }
 
+        public void highlightLegalMove(Board board) {
+            if (selectedPiece != null) {
+                for (int position : selectedPiece.getMoves(board)) {
+                    if (position == tileNum) {
+                        setBackground(Color.ORANGE);
+                    }
+                }
+            }
+        }
+
         public void drawTile(Board board) {
             assignTileColor();
             highlightLegalMove(board);
             assignPieceOnTile(board);
             validate();
             repaint();
-        }
-
-        public void highlightLegalMove(Board board){
-            if (selectedPiece!=null){
-                for (int position : selectedPiece.getMoves(board)){
-                    if (position == tileNum){
-                        setBackground(Color.ORANGE);
-                    }
-                }
-            }
         }
 
         public void drawTile(Board board, ArrayList<Integer> highlights) {
@@ -178,14 +175,11 @@ public class Chessboard extends JPanel {
                     String path = pieceImagePath +
                             board.getTile(this.tileNum).getPiece().getPieceAlliance().toString().substring(0, 1) +
                             board.getTile(this.tileNum).getPiece().toString() + ".png";
-
                     // System.out.println(path);
-
                     BufferedImage image = ImageIO.read(new File(path));
 
                     Image img = new ImageIcon(image).getImage();
                     img = img.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-
                     add(new JLabel(new ImageIcon(img)));
                     // add(new JLabel(new ImageIcon(image)));
                 } catch (IOException e) {
@@ -204,8 +198,10 @@ public class Chessboard extends JPanel {
             setBackground(tileNum % 2 == 0 ? terrain.getTileColor().brighter() : terrain.getTileColor().darker());
 
             boolean isHighlighted = false;
-            for (int i : highlights){
-                if (tileNum == i) isHighlighted = true;
+            for (int i : highlights) {
+                if (tileNum == i) {
+                    isHighlighted = true;
+                }
             }
             if (isHighlighted) {
                 System.out.println("ORANGE");

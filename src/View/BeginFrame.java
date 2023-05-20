@@ -56,7 +56,7 @@ public class BeginFrame extends JFrame {
             System.out.println("beginButton being clicked");
             if (isChecked) {
                 new Chessboard();
-                new MainFrame(100 + 7 * 70 + 300, 70 + 9 * 70 + 70, jungleIcon);
+                new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, jungleIcon);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Please agree to the Terms & Conditions!", "Jungle_CS109",
