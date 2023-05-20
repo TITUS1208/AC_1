@@ -35,7 +35,12 @@ public abstract class Player {
 
     //TODO
     public MoveTransition makeMove(Move move){
-        return null;
+        if (!this.legalMoves.contains(move)) {
+            return new MoveTransition(this.board, this.board, move, MoveStatus.ILLEGAL_MOVE);
+        }
+        final Board transitionedBoard = move.execute();
+        return new MoveTransition(this.board, transitionedBoard, move, MoveStatus.DONE);
+
     }
 
 

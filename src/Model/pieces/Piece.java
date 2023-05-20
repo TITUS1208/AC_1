@@ -25,7 +25,7 @@ public class Piece {
     public List<Move> possibleMoves(final Board board){
 
         //TODO
-        System.out.printf("Checking: %s (rank %d)\n", this, rank);
+        //System.out.printf("Checking: %s (rank %d)\n", this, rank);
 
 
         int candidateMoveCoordinate;

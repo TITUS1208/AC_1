@@ -45,7 +45,7 @@ public abstract class Move {
     public Board execute(){
         Board.Builder builder = new Board.Builder();
         for (Piece piece : this.board.getTurn().getActivePieces()){
-            if (!this.movingPiece.equals(movingPiece)) {
+            if (!this.movingPiece.equals(piece)) {
                 builder.setPiece(piece);
             }
         }
@@ -97,10 +97,12 @@ public abstract class Move {
             this.attackedPiece = attackedPiece;
         }
 
-        @Override
+        /*@Override
         public Board execute(){
             return null;
         }
+
+         */
 
         @Override
         public boolean isAttacking(){

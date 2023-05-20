@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 public abstract class Tile {
     protected final int tileCoor;
+
     private static final Map<Integer, EmptyTile> EMPTY_TILE_CACHE = createAllPossibleEmptyTile();
 
     protected Alliance tileAlliance;
@@ -34,6 +35,7 @@ public abstract class Tile {
     public abstract boolean isOccupied();
 
     public abstract Piece getPiece();
+    public int getTileCoor(){return tileCoor;}
 
     public static final class EmptyTile extends Tile{
         private EmptyTile(final int coordinate){
@@ -52,7 +54,7 @@ public abstract class Tile {
 
         @Override
         public String toString(){
-            return "-";
+            return "--";
         }
     }
 
