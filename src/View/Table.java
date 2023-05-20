@@ -63,6 +63,16 @@ public class Table {
             validate();
             repaint();
         }
+
+        public void drawBoard(Board board, ArrayList<Integer> highlights){
+            removeAll();
+            for (TilePanel tilePanel : boardTiles){
+                tilePanel.drawTile(board, highlights);
+                add(tilePanel);
+            }
+            validate();
+            repaint();
+        }
     }
 
     private class TilePanel extends JPanel{
@@ -77,13 +87,24 @@ public class Table {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (isLeftMouseButton(e)){
+                        ArrayList<Integer> finalHilights = new ArrayList<>();
                         if (selectedTile == null){
                             selectedTile = chessBoard.getTile(tileNum);
                             selectedPiece = selectedTile.getPiece();
                             if (selectedPiece == null){
                                 selectedTile = null;
+                                System.out.println("Cannot select empty tile");
                             } else if(selectedPiece.getPieceAlliance() != chessBoard.getTurn().getAlliance()){
                                 selectedTile = null;
+                                System.out.println("Cannot select enemy piece");
+                            } else{
+                                System.out.println("Piece selected");
+                                //TODO Possible Moves Highlight
+                                ArrayList<Integer> possibleMoves = new ArrayList<>();
+                                possibleMoves.addAll(selectedPiece.getMoves(chessBoard));
+                                finalHilights.addAll(possibleMoves);
+                                //boardPanel.drawBoard(chessBoard,possibleMoves);
+
                             }
                         } else {
                             destinationTile = chessBoard.getTile(tileNum);
@@ -98,9 +119,10 @@ public class Table {
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
-                                boardPanel.drawBoard(chessBoard);
-                                System.out.println(chessBoard);
+                                boardPanel.drawBoard(chessBoard, finalHilights);
+                                //System.out.println(chessBoard);
                             }
+
                         });
                     } else if (isRightMouseButton(e)){
                         selectedTile = null;
@@ -146,6 +168,13 @@ public class Table {
             repaint();
         }
 
+        public void drawTile(Board board, ArrayList<Integer> highlights){
+            assignTileColor(highlights);
+            assignPieceOnTile(board);
+            validate();
+            repaint();
+        }
+
         private void assignPieceOnTile(Board board){
             //System.out.println(board.getTile(this.tileNum).getPiece().getPieceAlliance().toString());
             this.removeAll();
@@ -175,14 +204,23 @@ public class Table {
             Terrain terrain = BoardUtils.TERRAIN_BOARD.get(tileNum);
             setBackground(tileNum % 2 == 0 ? terrain.getTileColor().brighter() : terrain.getTileColor().darker());
 
+        }
 
-            /*
-            if (!terrain.isGrass()){
-                setBackground(terrain.getTileColor());
-            } else {
-                setBackground(tileNum % 2 == 0 ? Color.GRAY : Color.DARK_GRAY);
+        private void assignTileColor(ArrayList<Integer> highlights){
+            Terrain terrain = BoardUtils.TERRAIN_BOARD.get(tileNum);
+            setBackground(tileNum % 2 == 0 ? terrain.getTileColor().brighter() : terrain.getTileColor().darker());
+            boolean isHighlighted = false;
+            if (highlights != null){
+                for (int i : highlights){
+                    if (tileNum == i){
+                        isHighlighted = true;
+                    }
+                }
+                if (isHighlighted){
+                    setBackground(Color.ORANGE);
+                    System.out.println("ORANGE");
+                }
             }
-            */
 
 
         }

@@ -10,7 +10,6 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             new BeginFrame(300, 220);
             //AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
-
             //new Table();
             Board.Builder builder = new Board.Builder();
             Board board = new Board(builder);
