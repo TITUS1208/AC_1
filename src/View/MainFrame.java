@@ -56,18 +56,18 @@ public class MainFrame extends JFrame {
     }
 
     public void layoutControl() {
-        restartButton.setBounds(30 + 7 * 70 + 55, 80 + 50, buttonWidth,
+        playerLabel.setBounds(30 + 7 * 70 + 115, 30, 300, 50);
+        roundLabel.setBounds(30 + 7 * 70 + 155, 60, 300, 50);
+        restartButton.setBounds(30 + 7 * 70 + 100, 80 + 50, buttonWidth,
                 buttonHeight);
-        undoButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight + 50 * 2, buttonWidth,
+        undoButton.setBounds(30 + 7 * 70 + 100, 80 + buttonHeight + 50 * 2, buttonWidth,
                 buttonHeight);
-        saveButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 2 + 50 * 3, buttonWidth,
+        saveButton.setBounds(30 + 7 * 70 + 100, 80 + buttonHeight * 2 + 50 * 3, buttonWidth,
                 buttonHeight);
-        loadButton.setBounds(30 + 7 * 70 + 55, 80 + buttonHeight * 3 + 50 * 4, buttonWidth,
+        loadButton.setBounds(30 + 7 * 70 + 100, 80 + buttonHeight * 3 + 50 * 4, buttonWidth,
                 buttonHeight);
         settingsButton.setBounds(0, 0, 36, 36);
-        playerLabel.setBounds(30 + 7 * 70 + 70, 30, 300, 50);
-        roundLabel.setBounds(30 + 7 * 70 + 110, 60, 300, 50);
-        // chessboard.setBounds(EXIT_ON_CLOSE, ABORT, WIDTH, HEIGHT);
+        chessboard.setBounds(36, 36, 75 * 7, 75 * 9);
     }
 
     public void addRestartButton() {
@@ -161,8 +161,7 @@ public class MainFrame extends JFrame {
     }
 
     private void addChessboard() {
-        // chessboardComponent = new ChessboardComponent();
-        // chessboardComponent.setLocation(frameHeight / 5, frameHeight / 10);
-        // add(chessboardComponent);
+        chessboard = new Chessboard();
+        add(chessboard);
     }
 }

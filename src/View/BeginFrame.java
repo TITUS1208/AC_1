@@ -55,8 +55,8 @@ public class BeginFrame extends JFrame {
         beginButton.addActionListener(e -> {
             System.out.println("beginButton being clicked");
             if (isChecked) {
-                new Table();
-                new MainFrame(30 + 7 * 70 + 30 + 250 + 30, 30 + 9 * 70 + 30, jungleIcon);
+                new Chessboard();
+                new MainFrame(100 + 7 * 70 + 300, 70 + 9 * 70 + 70, jungleIcon);
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Please agree to the Terms & Conditions!", "Jungle_CS109",
@@ -65,9 +65,6 @@ public class BeginFrame extends JFrame {
         });
         add(beginButton);
     }
-    // Assume one chess size is 70*70, Chessboard would be 7*70, 9*70
-    // Let status panel be 250, 9*70
-    // Let the margin of every border be 30 // MainFrame
 
     public void addCheckbox() {
         checkbox = new JCheckBox("Agree to the Terms & Conditions");
