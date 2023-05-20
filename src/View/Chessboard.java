@@ -1,5 +1,6 @@
 package View;
 
+import Model.AudioPlayer;
 import Model.board.*;
 import Model.pieces.Piece;
 import Model.player.MoveTransition;
@@ -71,6 +72,7 @@ public class Chessboard extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (isLeftMouseButton(e)) {
+                        AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
                         if (selectedTile == null) {
                             // first click --> select piece
                             selectedTile = chessBoard.getTile(tileNum);
