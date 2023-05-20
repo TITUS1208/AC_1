@@ -20,9 +20,12 @@ public class BoardUtils {
     public static final int BOTTOM_DEN = 59;
     public static final List<Terrain> TERRAIN_BOARD = createTerrainBoard();
 
-    public static final Dimension OUTER_DIMENSION = new Dimension(600,600);
-    public static final Dimension CHESS_BOARD_DIMENSION = new Dimension(400,400);
+    public static final Dimension OUTER_DIMENSION = new Dimension(620,800);
+    public static final Dimension CHESS_BOARD_DIMENSION = new Dimension(700,700);
     public static final Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
+
+
+    public static final String SKIN1_DIR = "art/animals/skin1/";
 
 
 
@@ -92,5 +95,9 @@ public class BoardUtils {
             terrains[i] = new Terrain(Terrain.TileType.TRAP, Alliance.BLACK);
         }
         return List.of(terrains);
+    }
+
+    public static String getSkinDir(){
+        return SKIN1_DIR;
     }
 }

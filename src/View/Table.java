@@ -1,17 +1,25 @@
 package View;
 
+import Model.board.Board;
 import Model.board.BoardUtils;
 import Model.board.Terrain;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Table {
+
+    private Board chessBoard;
     private JFrame gameFrame;
     private BoardPanel boardPanel;
 
     public Table(){
+        this.chessBoard = Board.createDefaultBoard();
         this.gameFrame = new JFrame("Animal chess");
         this.boardPanel = new BoardPanel();
         this.gameFrame.setSize(BoardUtils.OUTER_DIMENSION);
@@ -45,7 +53,33 @@ public class Table {
             this.tileNum = tileNum;
             setPreferredSize(BoardUtils.TILE_PANEL_DIMENSION);
             assignTileColor();
+            assignPieceOnTile(chessBoard);
             validate();
+        }
+
+        private void assignPieceOnTile(Board board){
+            //System.out.println(board.getTile(this.tileNum).getPiece().getPieceAlliance().toString());
+            this.removeAll();
+            String pieceImagePath = BoardUtils.getSkinDir();
+            if (board.getTile(tileNum).isOccupied()){
+                try {
+                    String path = pieceImagePath +
+                            board.getTile(this.tileNum).getPiece().getPieceAlliance().toString().substring(0,1) +
+                            board.getTile(this.tileNum).getPiece().toString() + ".png";
+
+                    System.out.println(path);
+
+                    BufferedImage image = ImageIO.read(new File(path));
+
+                    Image img = new ImageIcon(image).getImage();
+                    img = img.getScaledInstance(80,80, Image.SCALE_SMOOTH);
+
+                    add(new JLabel(new ImageIcon(img)));
+                    //add(new JLabel(new ImageIcon(image)));
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
         }
 
         private void assignTileColor(){

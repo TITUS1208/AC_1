@@ -273,7 +273,7 @@ public class Piece {
 
     @Override
     public String toString(){
-        return String.valueOf(getName().charAt(0));
+        return getName().substring(0,2).toUpperCase();
     }
 
     public List<Integer> getMoves(Board board){
