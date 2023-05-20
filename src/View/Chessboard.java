@@ -50,6 +50,17 @@ public class Chessboard extends JPanel {
         repaint();
     }
 
+    public void drawBoard(Board board, ArrayList<Integer> highlights) {
+        removeAll();
+        for (TilePanel tilePanel : boardTiles) {
+            tilePanel.drawTile(board, highlights);
+            add(tilePanel);
+        }
+        validate();
+        repaint();
+    }
+
+
     private class TilePanel extends JPanel {
         private int tileNum;
 
@@ -64,14 +75,20 @@ public class Chessboard extends JPanel {
                 public void mouseClicked(MouseEvent e) {
                     if (isLeftMouseButton(e)) {
                         if (selectedTile == null) {
+                            //first click --> select piece
                             selectedTile = chessBoard.getTile(tileNum);
                             selectedPiece = selectedTile.getPiece();
                             if (selectedPiece == null) {
                                 selectedTile = null;
+                                System.out.println("Cannot select empty tile");
                             } else if (selectedPiece.getPieceAlliance() != chessBoard.getTurn().getAlliance()) {
                                 selectedTile = null;
+                                System.out.println("Cannot select enemy piece");
+                            } else{
+
                             }
                         } else {
+                            //successful move
                             destinationTile = chessBoard.getTile(tileNum);
                             Move move = Move.CreateMove.createMove(chessBoard, selectedTile.getTileCoor(),
                                     destinationTile.getTileCoor());
@@ -82,6 +99,7 @@ public class Chessboard extends JPanel {
                             }
                             clearSelection();
                         }
+
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
@@ -89,6 +107,7 @@ public class Chessboard extends JPanel {
                                 System.out.println(chessBoard);
                             }
                         });
+
                     } else if (isRightMouseButton(e)) {
                         selectedTile = null;
                         destinationTile = null;
@@ -127,6 +146,24 @@ public class Chessboard extends JPanel {
 
         public void drawTile(Board board) {
             assignTileColor();
+            highlightLegalMove(board);
+            assignPieceOnTile(board);
+            validate();
+            repaint();
+        }
+
+        public void highlightLegalMove(Board board){
+            if (selectedPiece!=null){
+                for (int position : selectedPiece.getMoves(board)){
+                    if (position == tileNum){
+                        setBackground(Color.ORANGE);
+                    }
+                }
+            }
+        }
+
+        public void drawTile(Board board, ArrayList<Integer> highlights) {
+            assignTileColor(highlights);
             assignPieceOnTile(board);
             validate();
             repaint();
@@ -160,15 +197,20 @@ public class Chessboard extends JPanel {
         private void assignTileColor() {
             Terrain terrain = BoardUtils.TERRAIN_BOARD.get(tileNum);
             setBackground(tileNum % 2 == 0 ? terrain.getTileColor().brighter() : terrain.getTileColor().darker());
+        }
 
-            /*
-             * if (!terrain.isGrass()){
-             * setBackground(terrain.getTileColor());
-             * } else {
-             * setBackground(tileNum % 2 == 0 ? Color.GRAY : Color.DARK_GRAY);
-             * }
-             */
+        private void assignTileColor(ArrayList<Integer> highlights) {
+            Terrain terrain = BoardUtils.TERRAIN_BOARD.get(tileNum);
+            setBackground(tileNum % 2 == 0 ? terrain.getTileColor().brighter() : terrain.getTileColor().darker());
 
+            boolean isHighlighted = false;
+            for (int i : highlights){
+                if (tileNum == i) isHighlighted = true;
+            }
+            if (isHighlighted) {
+                System.out.println("ORANGE");
+                setBackground(Color.ORANGE);
+            }
         }
     }
 }
