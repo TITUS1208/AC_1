@@ -12,10 +12,10 @@ public class Main {
             // AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
 
             // new Table();
-            // Board.Builder builder = new Board.Builder();
-            // Board board = new Board(builder);
-            // board = Board.testBoard1();
-            // board.getTile(16).getPiece().printPossibleMoves(board);
+            Board.Builder builder = new Board.Builder();
+            Board board = new Board(builder);
+            board = Board.testBoard1();
+            board.getTile(16).getPiece().printPossibleMoves(board);
             // System.out.println(board);
             // System.out.println(BoardUtils.TERRAIN_BOARD.get(10));
 
