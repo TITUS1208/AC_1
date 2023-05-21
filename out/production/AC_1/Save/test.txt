@@ -6,7 +6,7 @@ Haoyang
 
 
 Titus
-- possible moves
+- possible moves (done)
 - undo/redo
 - load
     - check illegal positions

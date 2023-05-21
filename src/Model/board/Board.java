@@ -44,7 +44,7 @@ public class Board {
         this.blackPlayer = new BlackPlayer(this, blackLegalMoves);
 
         if (builder.turn == null){
-            builder.setTurn(Alliance.WHITE);
+            builder.setTurn(Alliance.BLACK);
         } else {
             this.turn = builder.turn.choosePlayer(this.whitePlayer, this.blackPlayer);
         }
@@ -102,7 +102,7 @@ public class Board {
         /*
         add more
          */
-        builder.setTurn(Alliance.WHITE);
+        builder.setTurn(Alliance.BLACK);
         return builder.build();
     }
 

@@ -23,7 +23,7 @@ public class Chessboard extends JPanel {
     private Tile selectedTile;
     private Tile destinationTile;
     private Piece selectedPiece;
-
+    private boolean highlight;
     private Board chessBoard;
     private ArrayList<TilePanel> boardTiles;
 
@@ -36,6 +36,7 @@ public class Chessboard extends JPanel {
             boardTiles.add(tile);
             add(tile);
         }
+        this.highlight = false;
         validate();
     }
 
@@ -80,11 +81,13 @@ public class Chessboard extends JPanel {
                             if (selectedPiece == null) {
                                 selectedTile = null;
                                 System.out.println("Cannot select empty tile");
+                                highlight = false;
                             } else if (selectedPiece.getPieceAlliance() != chessBoard.getTurn().getAlliance()) {
                                 selectedTile = null;
                                 System.out.println("Cannot select enemy piece");
-                            } else {
-
+                                highlight = false;
+                            } else{
+                                highlight = true;
                             }
                         } else {
                             // successful move
@@ -103,7 +106,7 @@ public class Chessboard extends JPanel {
                             @Override
                             public void run() {
                                 drawBoard(chessBoard);
-                                System.out.println(chessBoard);
+                                //System.out.println(chessBoard);
                             }
                         });
 
@@ -144,7 +147,7 @@ public class Chessboard extends JPanel {
         }
 
         public void highlightLegalMove(Board board) {
-            if (selectedPiece != null) {
+            if (highlight && selectedPiece != null) {
                 for (int position : selectedPiece.getMoves(board)) {
                     if (position == tileNum) {
                         setBackground(Color.ORANGE);
