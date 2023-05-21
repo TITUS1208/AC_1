@@ -1,16 +1,21 @@
+import java.io.FileNotFoundException;
+
 import javax.swing.SwingUtilities;
 
 import Model.AudioPlayer;
 import Model.board.*;
 import View.BeginFrame;
-import View.Chessboard;
 import View.Constant;
 
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new BeginFrame(Constant.BEGIN_FRAME_WIDTH, Constant.BEGIN_FRAME_HEIGHT);
-            // AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
+            try {
+                new BeginFrame(Constant.BEGIN_FRAME_WIDTH, Constant.BEGIN_FRAME_HEIGHT);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
 
             // new Table();
             // Board.Builder builder = new Board.Builder();

@@ -89,7 +89,7 @@ public class SettingsFrame extends JDialog {
 
         backButton.addActionListener(e -> {
             System.out.println("backButton being clicked");
-            this.setVisible(false);
+            dispose();
         });
         add(backButton);
     }

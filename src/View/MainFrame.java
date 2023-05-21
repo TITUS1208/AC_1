@@ -2,8 +2,6 @@ package View;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
-import java.io.File;
 
 import javax.swing.*;
 
@@ -17,6 +15,7 @@ public class MainFrame extends JFrame {
     private JButton undoButton;
     private JButton saveButton;
     private JButton loadButton;
+    private JButton backButton;
     private JButton settingsButton;
 
     private JLabel playerLabel;
@@ -29,10 +28,13 @@ public class MainFrame extends JFrame {
     private Icon settingsIcon;
     private ImageIcon jungleIcon;
 
-    public MainFrame(int frameWidth, int frameHeight, ImageIcon jungleIcon) {
+    private JFrame beginFrame;
+
+    public MainFrame(int frameWidth, int frameHeight, ImageIcon jungleIcon, JFrame beginFrame) {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.jungleIcon = jungleIcon;
+        this.beginFrame = beginFrame;
         setTitle("Jungle_CS109");
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);
@@ -47,6 +49,7 @@ public class MainFrame extends JFrame {
         addUndoButton();
         addSaveButton();
         addLoadButton();
+        addBackButton();
         addSettingsButton();
         addPlayerLabel();
         addRoundLabel();
@@ -66,6 +69,8 @@ public class MainFrame extends JFrame {
                 buttonHeight);
         loadButton.setBounds(30 + 7 * 70 + 100, 80 + buttonHeight * 3 + 50 * 4, buttonWidth,
                 buttonHeight);
+        backButton.setBounds(30 + 7 * 70 + 100, 80 + buttonHeight * 4 + 50 * 5, buttonWidth,
+                buttonHeight);
         settingsButton.setBounds(0, 0, 36, 36);
         chessboard.setBounds(36, 36, 75 * 7, 75 * 9);
     }
@@ -80,7 +85,7 @@ public class MainFrame extends JFrame {
             int temp = JOptionPane.showConfirmDialog(this, "Are you sure to restart?");
             if (temp == JOptionPane.YES_OPTION) {
                 setVisible(false);
-                new MainFrame(frameWidth, frameHeight, jungleIcon);
+                new MainFrame(frameWidth, frameHeight, jungleIcon, beginFrame);
             }
         });
         add(restartButton);
@@ -132,6 +137,19 @@ public class MainFrame extends JFrame {
             }
         });
         add(loadButton);
+    }
+
+    public void addBackButton() {
+        backButton = new JButton("BACK");
+        backButton.setFont(new Font("Monaco", Font.BOLD, 17));
+        backButton.setFocusable(false);
+
+        backButton.addActionListener(e -> {
+            System.out.println("backButton being clicked");
+            setVisible(false);
+            beginFrame.setVisible(true);
+        });
+        add(backButton);
     }
 
     public void addSettingsButton() {
