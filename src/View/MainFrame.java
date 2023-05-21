@@ -77,7 +77,11 @@ public class MainFrame extends JFrame {
 
         restartButton.addActionListener(e -> {
             System.out.println("restartButton being clicked");
-            // Prompts restart action here via controller
+            int temp = JOptionPane.showConfirmDialog(this, "Are you sure to restart?");
+            if (temp == JOptionPane.YES_OPTION) {
+                setVisible(false);
+                new MainFrame(frameWidth, frameHeight, jungleIcon);
+            }
         });
         add(restartButton);
     }
