@@ -27,7 +27,7 @@ public class BlackPlayer extends Player{
     public Player getOpponent(){return this.board.whitePlayer();}
     @Override
     public boolean checkDen(){
-        if (this.board.getTile(BoardUtils.TOP_DEN).getPiece() != null) {
+        if (this.board.getTile(BoardUtils.BOTTOM_DEN).getPiece() != null) {
             if (this.board.getTile(BoardUtils.BOTTOM_DEN).getPiece().getPieceAlliance() == enemy) {
                 return true;
             }

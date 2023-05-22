@@ -162,7 +162,7 @@ public class Board {
         builder.setPiece(new Piece(2, Alliance.WHITE, 5, "Leopard"));
         builder.setPiece(new Piece(6, Alliance.WHITE, 6, "Tiger"));
         builder.setPiece(new Piece(16, Alliance.WHITE, 7, "Lion"));
-        builder.setPiece(new Piece(20, Alliance.WHITE, 8, "Elephant"));
+        builder.setPiece(new Piece(58, Alliance.WHITE, 8, "Elephant"));
 
 
         builder.setPiece(new Piece(29, Alliance.BLACK, 1, "Rat"));
@@ -171,13 +171,27 @@ public class Board {
         builder.setPiece(new Piece(44, Alliance.BLACK, 4, "Wolf"));
         builder.setPiece(new Piece(46, Alliance.BLACK, 5, "Leopard"));
         builder.setPiece(new Piece(56, Alliance.BLACK, 6, "Tiger"));
-        builder.setPiece(new Piece(62, Alliance.BLACK, 7, "Lion"));
+        builder.setPiece(new Piece(4, Alliance.BLACK, 7, "Lion"));
         builder.setPiece(new Piece(35, Alliance.BLACK, 8, "Elephant"));
         /*
         add more
          */
-        builder.setTurn(Alliance.WHITE);
+        builder.setTurn(Alliance.BLACK);
         return builder.build();
+    }
+
+    public boolean isGameOver(){
+        if (whitePlayer.checkDen() || blackPlayer.checkDen()){
+            return true;
+        }
+        return false;
+    }
+
+    public Player getWhitePlayer(){
+        return whitePlayer;
+    }
+    public Player getBlackPlayer(){
+        return blackPlayer;
     }
 
 

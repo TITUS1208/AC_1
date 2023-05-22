@@ -2,8 +2,10 @@ package View;
 
 import Model.AudioPlayer;
 import Model.board.*;
+import Model.pieces.Alliance;
 import Model.pieces.Piece;
 import Model.player.MoveTransition;
+import com.sun.tools.javac.Main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,11 +27,14 @@ public class Chessboard extends JPanel {
     private Piece selectedPiece;
     private boolean highlight;
     private Board chessBoard;
+    private JFrame frame;
     private ArrayList<TilePanel> boardTiles;
 
-    public Chessboard() {
+    public Chessboard(JFrame frame) {
         setLayout(new GridLayout(9, 7));
-        chessBoard = Board.createDefaultBoard();
+        this.frame = frame;
+        //chessBoard = Board.createDefaultBoard();
+        chessBoard = Board.testBoard1();
         boardTiles = new ArrayList<>();
         for (int i = 0; i < BoardUtils.BOARD_SIZE; i++) {
             TilePanel tile = new TilePanel(this, i);
@@ -72,6 +77,7 @@ public class Chessboard extends JPanel {
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    //boolean gameOver = false;
                     if (isLeftMouseButton(e)) {
                         AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
                         if (selectedTile == null) {
@@ -92,13 +98,20 @@ public class Chessboard extends JPanel {
                         } else {
                             // successful move
                             destinationTile = chessBoard.getTile(tileNum);
-                            Move move = Move.CreateMove.createMove(chessBoard, selectedTile.getTileCoor(),
-                                    destinationTile.getTileCoor());
-                            MoveTransition moveTransition = chessBoard.getTurn().makeMove(move);
-                            if (moveTransition.getMoveStatus().isDone()) {
-                                chessBoard = moveTransition.getBoard();
-                                // TODO move log
+                            boolean isPossibleMove = false;
+                            for (int i : selectedPiece.getMoves(chessBoard)){
+                                if (tileNum == i) isPossibleMove = true;
                             }
+
+                            if (isPossibleMove){
+                                Move move = Move.CreateMove.createMove(chessBoard, selectedTile.getTileCoor(), destinationTile.getTileCoor());
+                                MoveTransition moveTransition = chessBoard.getTurn().makeMove(move);
+                                if (moveTransition.getMoveStatus().isDone()) {
+                                    chessBoard = moveTransition.getBoard();
+                                    System.out.println(moveCommand());
+                                }
+                            }
+                            //TODO move log
                             clearSelection();
                         }
 
@@ -106,9 +119,39 @@ public class Chessboard extends JPanel {
                             @Override
                             public void run() {
                                 drawBoard(chessBoard);
+
+                                //TODO check game status
+                                if (chessBoard.isGameOver()){
+                                    System.out.println("Game Over");
+                                    frame.dispose();
+                                    if (chessBoard.getWhitePlayer().checkDen()){
+                                        System.out.println("Black wins");
+                                        //victoryScreen(Alliance.WHITE);
+                                    } else if (chessBoard.getBlackPlayer().checkDen()){
+                                        System.out.println("White wins");
+                                    }
+                                }
                                 //System.out.println(chessBoard);
                             }
                         });
+
+                        /*
+                        public void addRestartButton() {
+        restartButton = new JButton("RESTART");
+        restartButton.setFont(new Font("Monaco", Font.BOLD, 17));
+        restartButton.setFocusable(false);
+
+        restartButton.addActionListener(e -> {
+            System.out.println("restartButton being clicked");
+            int temp = JOptionPane.showConfirmDialog(this, "Are you sure to restart?");
+            if (temp == JOptionPane.YES_OPTION) {
+                setVisible(false);
+                new MainFrame(frameWidth, frameHeight, jungleIcon);
+            }
+        });
+        add(restartButton);
+    }
+                         */
 
                     } else if (isRightMouseButton(e)) {
                         selectedTile = null;
@@ -212,6 +255,12 @@ public class Chessboard extends JPanel {
                 System.out.println("ORANGE");
                 setBackground(Color.ORANGE);
             }
+        }
+
+        public String moveCommand(){
+            return String.format("%s %d %d",
+                    selectedPiece.getPieceAlliance().toString().substring(0,1) + selectedPiece.getName().substring(0,2).toUpperCase(),
+                    selectedTile.getTileCoor(), destinationTile.getTileCoor());
         }
     }
 }
