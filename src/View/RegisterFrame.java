@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 
 public class RegisterFrame extends JFrame {
@@ -88,14 +89,18 @@ public class RegisterFrame extends JFrame {
                 username_pw.setUsername_pw(username, password);
                 JOptionPane.showMessageDialog(null, "Successful registration", "Registration",
                         JOptionPane.INFORMATION_MESSAGE);
-                setVisible(false);
                 try {
                     FileWriter fileWriter = new FileWriter("src\\User\\users.txt", true);
-                    fileWriter.write("\n" + username + " " + password);
-                    // fileWriter.write("\n");
+                    fileWriter.write("\n" + username + " " + password + " 0");
                     fileWriter.close();
                 } catch (Exception exp) {
                     System.out.println(exp);
+                }
+                try {
+                    dispose();
+                    new BeginFrame(Constant.BEGIN_FRAME_WIDTH, Constant.BEGIN_FRAME_HEIGHT);
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
                 }
             }
             // System.out.println(username_pw.getUsername_pw());
@@ -108,6 +113,11 @@ public class RegisterFrame extends JFrame {
         backButton.setFont(new Font("Monaco", Font.BOLD, 17));
         backButton.addActionListener((e) -> {
             dispose();
+            try {
+                new BeginFrame(Constant.BEGIN_FRAME_WIDTH, Constant.BEGIN_FRAME_HEIGHT);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
         });
         add(backButton);
     }

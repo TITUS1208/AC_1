@@ -4,26 +4,31 @@ import javax.swing.*;
 
 import Model.AudioPlayer;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.io.FileNotFoundException;
+import java.util.Set;
 
 public class SettingsFrame extends JDialog {
     private final int buttonWidth = 190;
     private final int buttonHeight = 60;
 
     private JButton changeThemeButton;
-    // private JButton turnOnButton;
-    // private JButton turnOffButton;
     private JButton turnOnOffButton;
+    private JButton rankingButton;
     private JButton backButton;
 
     private JLabel titleLabel;
+    private JPanel rankingPanel;
 
     private ImageIcon jungleIcon;
-    int count = 2;
+    private UsernamePassword username_pw;
+    private int count = 2;
 
-    public SettingsFrame(ImageIcon jungleIcon) {
+    public SettingsFrame(ImageIcon jungleIcon, UsernamePassword username_pw) throws FileNotFoundException {
         this.jungleIcon = jungleIcon;
+        this.username_pw = username_pw;
         setTitle("Jungle_CS109");
-        setSize(300, 400);
+        setSize(300, 490);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(null);
@@ -33,6 +38,7 @@ public class SettingsFrame extends JDialog {
 
         addChangeThemeButton();
         addTurnOnOffButton();
+        addRankingButton();
         addbackButton();
         addTitleLabel();
 
@@ -44,7 +50,9 @@ public class SettingsFrame extends JDialog {
                 buttonHeight);
         turnOnOffButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 2 + buttonHeight * 2, buttonWidth,
                 buttonHeight);
-        backButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
+        rankingButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 3 + buttonHeight * 3, buttonWidth,
+                buttonHeight);
+        backButton.setBounds(300 / 2 - buttonWidth / 2 - 5, 30 * 4 + buttonHeight * 4, buttonWidth,
                 buttonHeight);
         titleLabel.setBounds(300 / 2 - 55, 20, 200, 50);
     }
@@ -82,6 +90,20 @@ public class SettingsFrame extends JDialog {
         add(turnOnOffButton);
     }
 
+    public void addRankingButton() throws FileNotFoundException {
+        new UsernamePassword();
+        rankingButton = new JButton("Ranking List");
+        rankingButton.setFont(new Font("Serif", Font.BOLD, 16));
+        rankingButton.setFocusable(false);
+
+        rankingButton.addActionListener(e -> {
+            System.out.println("rankingButton being clicked");
+            JOptionPane.showMessageDialog(this, rankingPanel(), "Jungle_CS109",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
+        add(rankingButton);
+    }
+
     public void addbackButton() {
         backButton = new JButton("Back");
         backButton.setFont(new Font("Serif", Font.BOLD, 16));
@@ -100,5 +122,18 @@ public class SettingsFrame extends JDialog {
         titleLabel.setVerticalTextPosition(JLabel.CENTER);
         titleLabel.setFont(new Font("Comic Sans", Font.BOLD, 18));
         add(titleLabel);
+    }
+
+    private JPanel rankingPanel() {
+        rankingPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        rankingPanel.add(new JLabel("Ranking List"));
+        for (int i = 0; i < username_pw.getUsername_score().size(); i++) {
+            JLabel tempLabel = new JLabel(i + 1 + ". " + username_pw.getUsername_score().keySet().toArray()[i]
+                    + " " + username_pw.getUsername_score().values().toArray()[i]);
+            rankingPanel.add(tempLabel);
+            System.out.println(i + 1 + ". " + username_pw.getUsername_score().keySet().toArray()[i]
+                    + " " + username_pw.getUsername_score().values().toArray()[i]);
+        }
+        return rankingPanel;
     }
 }

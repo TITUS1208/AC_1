@@ -6,16 +6,20 @@ import Model.AudioPlayer;
 import Model.board.*;
 import View.BeginFrame;
 import View.Constant;
+import View.SettingsFrame;
+import View.UsernamePassword;
 
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
                 new BeginFrame(Constant.BEGIN_FRAME_WIDTH, Constant.BEGIN_FRAME_HEIGHT);
+                // UsernamePassword user = new UsernamePassword();
+                // new SettingsFrame(null, user);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
+            // AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
 
             // new Table();
             // Board.Builder builder = new Board.Builder();

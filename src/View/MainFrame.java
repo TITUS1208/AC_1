@@ -2,6 +2,7 @@ package View;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.FileNotFoundException;
 
 import javax.swing.*;
 
@@ -29,12 +30,15 @@ public class MainFrame extends JFrame {
     private ImageIcon jungleIcon;
 
     private JFrame beginFrame;
+    private UsernamePassword username_pw;
 
-    public MainFrame(int frameWidth, int frameHeight, ImageIcon jungleIcon, JFrame beginFrame) {
+    public MainFrame(int frameWidth, int frameHeight, ImageIcon jungleIcon, JFrame beginFrame,
+            UsernamePassword usernane_pw) {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.jungleIcon = jungleIcon;
         this.beginFrame = beginFrame;
+        this.username_pw = usernane_pw;
         setTitle("Jungle_CS109");
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);
@@ -85,7 +89,7 @@ public class MainFrame extends JFrame {
             int temp = JOptionPane.showConfirmDialog(this, "Are you sure to restart?");
             if (temp == JOptionPane.YES_OPTION) {
                 setVisible(false);
-                new MainFrame(frameWidth, frameHeight, jungleIcon, beginFrame);
+                new MainFrame(frameWidth, frameHeight, jungleIcon, beginFrame, username_pw);
             }
         });
         add(restartButton);
@@ -161,7 +165,11 @@ public class MainFrame extends JFrame {
         settingsButton.setBorderPainted(false);
         settingsButton.addActionListener(e -> {
             System.out.println("settingsButton being clicked");
-            new SettingsFrame(jungleIcon);
+            try {
+                new SettingsFrame(jungleIcon, username_pw);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
         });
         add(settingsButton);
     }

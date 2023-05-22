@@ -99,7 +99,7 @@ public class BeginFrame extends JFrame {
                 if (isChecked) {
                     JOptionPane.showMessageDialog(this, "Successful login!", "Jungle_CS109",
                             JOptionPane.INFORMATION_MESSAGE);
-                    new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, jungleIcon, this);
+                    new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, jungleIcon, this, username_pw);
                     this.setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(this, "Please agree to the Terms & Conditions!", "Jungle_CS109",
@@ -113,6 +113,7 @@ public class BeginFrame extends JFrame {
     private void addRegisterButton() {
         registerButton = new JButton("Register");
         registerButton.addActionListener((e) -> {
+            dispose();
             new RegisterFrame(jungleIcon, username_pw);
         });
         registerButton.setFont(new Font("Monaco", Font.BOLD, 17));
