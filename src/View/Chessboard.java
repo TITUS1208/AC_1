@@ -31,12 +31,14 @@ public class Chessboard extends JPanel {
     private JFrame frame;
     private JFrame beginFrame;
     private ArrayList<TilePanel> boardTiles;
+    private UsernamePassword username_pw;
 
-    public Chessboard(JFrame frame) {
+    public Chessboard(JFrame frame, JFrame beginFrame, UsernamePassword username_pw) {
         setLayout(new GridLayout(9, 7));
         this.frame = frame;
         this.beginFrame = beginFrame;
-        //chessBoard = Board.createDefaultBoard();
+        this.username_pw = username_pw;
+        // chessBoard = Board.createDefaultBoard();
         chessBoard = Board.testBoard1();
         boardTiles = new ArrayList<>();
         for (int i = 0; i < BoardUtils.BOARD_SIZE; i++) {
@@ -80,7 +82,7 @@ public class Chessboard extends JPanel {
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    //boolean gameOver = false;
+                    // boolean gameOver = false;
                     if (isLeftMouseButton(e)) {
                         AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
                         if (selectedTile == null) {
@@ -95,26 +97,28 @@ public class Chessboard extends JPanel {
                                 selectedTile = null;
                                 System.out.println("Cannot select enemy piece");
                                 highlight = false;
-                            } else{
+                            } else {
                                 highlight = true;
                             }
                         } else {
                             // successful move
                             destinationTile = chessBoard.getTile(tileNum);
                             boolean isPossibleMove = false;
-                            for (int i : selectedPiece.getMoves(chessBoard)){
-                                if (tileNum == i) isPossibleMove = true;
+                            for (int i : selectedPiece.getMoves(chessBoard)) {
+                                if (tileNum == i)
+                                    isPossibleMove = true;
                             }
 
-                            if (isPossibleMove){
-                                Move move = Move.CreateMove.createMove(chessBoard, selectedTile.getTileCoor(), destinationTile.getTileCoor());
+                            if (isPossibleMove) {
+                                Move move = Move.CreateMove.createMove(chessBoard, selectedTile.getTileCoor(),
+                                        destinationTile.getTileCoor());
                                 MoveTransition moveTransition = chessBoard.getTurn().makeMove(move);
                                 if (moveTransition.getMoveStatus().isDone()) {
                                     chessBoard = moveTransition.getBoard();
                                     System.out.println(moveCommand());
                                 }
                             }
-                            //TODO move log
+                            // TODO move log
                             clearSelection();
                         }
 
@@ -123,33 +127,37 @@ public class Chessboard extends JPanel {
                             public void run() {
                                 drawBoard(chessBoard);
 
-                                //TODO check game status
-                                if (chessBoard.isGameOver()){
-                                    //System.out.println("Game Over");
+                                // TODO check game status
+                                if (chessBoard.isGameOver()) {
+                                    // System.out.println("Game Over");
                                     String winner = "";
-                                    if (chessBoard.getWhitePlayer().checkDen()){
-                                        //System.out.println("Black wins");
+                                    if (chessBoard.getWhitePlayer().checkDen()) {
+                                        // System.out.println("Black wins");
                                         winner = "player1";
-                                    } else if (chessBoard.getBlackPlayer().checkDen()){
-                                        //System.out.println("White wins");
+                                    } else if (chessBoard.getBlackPlayer().checkDen()) {
+                                        // System.out.println("White wins");
                                         winner = "player2";
                                     }
 
                                     BeginFrame beginFrame = null;
                                     try {
-                                        beginFrame = new BeginFrame(Constant.BEGIN_FRAME_WIDTH, Constant.BEGIN_FRAME_HEIGHT);
+                                        beginFrame = new BeginFrame(Constant.BEGIN_FRAME_WIDTH,
+                                                Constant.BEGIN_FRAME_HEIGHT);
                                     } catch (FileNotFoundException ex) {
                                         throw new RuntimeException(ex);
                                     }
 
                                     while (true) {
-                                        int result = JOptionPane.showConfirmDialog(null, String.format("%s wins, congratulation!", winner) + "\n Do you wanna continue?",
-                                                "Jungle_CS109", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
+                                        int result = JOptionPane.showConfirmDialog(null,
+                                                String.format("%s wins, congratulation!", winner)
+                                                        + "\n Do you wanna continue?",
+                                                "Jungle_CS109", JOptionPane.YES_NO_OPTION,
+                                                JOptionPane.QUESTION_MESSAGE);
 
                                         if (result == JOptionPane.YES_OPTION) {
                                             frame.dispose();
-                                            new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, Constant.JUNGLE_ICON, beginFrame);
+                                            new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT,
+                                                    Constant.JUNGLE_ICON, beginFrame, username_pw);
 
                                             break;
                                         } else if (result == JOptionPane.NO_OPTION) {
@@ -161,28 +169,27 @@ public class Chessboard extends JPanel {
                                         }
                                     }
 
-
                                 }
-                                //System.out.println(chessBoard);
+                                // System.out.println(chessBoard);
                             }
                         });
 
                         /*
-                        public void addRestartButton() {
-        restartButton = new JButton("RESTART");
-        restartButton.setFont(new Font("Monaco", Font.BOLD, 17));
-        restartButton.setFocusable(false);
-
-        restartButton.addActionListener(e -> {
-            System.out.println("restartButton being clicked");
-            int temp = JOptionPane.showConfirmDialog(this, "Are you sure to restart?");
-            if (temp == JOptionPane.YES_OPTION) {
-                setVisible(false);
-                new MainFrame(frameWidth, frameHeight, jungleIcon);
-            }
-        });
-        add(restartButton);
-    }
+                         * public void addRestartButton() {
+                         * restartButton = new JButton("RESTART");
+                         * restartButton.setFont(new Font("Monaco", Font.BOLD, 17));
+                         * restartButton.setFocusable(false);
+                         * 
+                         * restartButton.addActionListener(e -> {
+                         * System.out.println("restartButton being clicked");
+                         * int temp = JOptionPane.showConfirmDialog(this, "Are you sure to restart?");
+                         * if (temp == JOptionPane.YES_OPTION) {
+                         * setVisible(false);
+                         * new MainFrame(frameWidth, frameHeight, jungleIcon);
+                         * }
+                         * });
+                         * add(restartButton);
+                         * }
                          */
 
                     } else if (isRightMouseButton(e)) {
@@ -289,9 +296,10 @@ public class Chessboard extends JPanel {
             }
         }
 
-        public String moveCommand(){
+        public String moveCommand() {
             return String.format("%s %d %d",
-                    selectedPiece.getPieceAlliance().toString().substring(0,1) + selectedPiece.getName().substring(0,2).toUpperCase(),
+                    selectedPiece.getPieceAlliance().toString().substring(0, 1)
+                            + selectedPiece.getName().substring(0, 2).toUpperCase(),
                     selectedTile.getTileCoor(), destinationTile.getTileCoor());
         }
     }

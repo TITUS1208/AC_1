@@ -33,12 +33,12 @@ public class MainFrame extends JFrame {
     private UsernamePassword username_pw;
 
     public MainFrame(int frameWidth, int frameHeight, ImageIcon jungleIcon, JFrame beginFrame,
-            UsernamePassword usernane_pw) {
+            UsernamePassword username_pw) {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.jungleIcon = jungleIcon;
         this.beginFrame = beginFrame;
-        this.username_pw = usernane_pw;
+        this.username_pw = username_pw;
         setTitle("Jungle_CS109");
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);
@@ -191,9 +191,8 @@ public class MainFrame extends JFrame {
     }
 
     private void addChessboard() {
-        chessboard = new Chessboard(this);
+        chessboard = new Chessboard(this, beginFrame, username_pw);
         add(chessboard);
     }
-
 
 }
