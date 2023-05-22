@@ -152,6 +152,23 @@ public class Board {
         return builder.toString();
     }
 
+    public String formatToText(){
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < BoardUtils.BOARD_SIZE; i++){
+            if (this.gameBoard.get(i).getPiece() != null) {
+                String tileText = this.gameBoard.get(i).getPiece().getPieceAlliance().toString().substring(0,1) + this.gameBoard.get(i).getPiece().toString();
+                builder.append(tileText);
+            } else{
+                builder.append("---");
+            }
+            builder.append(" ");
+            if ((i + 1) % BoardUtils.TILES_PER_ROW == 0){
+                builder.append("\n");
+            }
+        }
+        return builder.toString();
+    }
+
 
     public static Board testBoard1(){
         Builder builder = new Builder();

@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -28,11 +29,13 @@ public class Chessboard extends JPanel {
     private boolean highlight;
     private Board chessBoard;
     private JFrame frame;
+    private JFrame beginFrame;
     private ArrayList<TilePanel> boardTiles;
 
     public Chessboard(JFrame frame) {
         setLayout(new GridLayout(9, 7));
         this.frame = frame;
+        this.beginFrame = beginFrame;
         //chessBoard = Board.createDefaultBoard();
         chessBoard = Board.testBoard1();
         boardTiles = new ArrayList<>();
@@ -122,14 +125,43 @@ public class Chessboard extends JPanel {
 
                                 //TODO check game status
                                 if (chessBoard.isGameOver()){
-                                    System.out.println("Game Over");
-                                    frame.dispose();
+                                    //System.out.println("Game Over");
+                                    String winner = "";
                                     if (chessBoard.getWhitePlayer().checkDen()){
-                                        System.out.println("Black wins");
-                                        //victoryScreen(Alliance.WHITE);
+                                        //System.out.println("Black wins");
+                                        winner = "player1";
                                     } else if (chessBoard.getBlackPlayer().checkDen()){
-                                        System.out.println("White wins");
+                                        //System.out.println("White wins");
+                                        winner = "player2";
                                     }
+
+                                    BeginFrame beginFrame = null;
+                                    try {
+                                        beginFrame = new BeginFrame(Constant.BEGIN_FRAME_WIDTH, Constant.BEGIN_FRAME_HEIGHT);
+                                    } catch (FileNotFoundException ex) {
+                                        throw new RuntimeException(ex);
+                                    }
+
+                                    while (true) {
+                                        int result = JOptionPane.showConfirmDialog(null, String.format("%s wins, congratulation!", winner) + "\n Do you wanna continue?",
+                                                "Jungle_CS109", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+
+                                        if (result == JOptionPane.YES_OPTION) {
+                                            frame.dispose();
+                                            new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, Constant.JUNGLE_ICON, beginFrame);
+
+                                            break;
+                                        } else if (result == JOptionPane.NO_OPTION) {
+                                            frame.dispose();
+                                            beginFrame.setVisible(true);
+                                            break;
+                                        } else {
+                                            continue;
+                                        }
+                                    }
+
+
                                 }
                                 //System.out.println(chessBoard);
                             }

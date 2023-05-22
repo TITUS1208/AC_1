@@ -91,8 +91,7 @@ public class Piece {
 
 
                 } else{ ///////////////PIECE IN THE TILE////////////////
-                    //TODO
-                    System.out.println("piece in tile");
+
 
                     Alliance destinationTilePieceAlliance = candidateTile.getPiece().getPieceAlliance();
                     Piece pieceOnDestination = candidateTile.getPiece();
@@ -100,7 +99,7 @@ public class Piece {
                     if (this.alliance != destinationTilePieceAlliance){
                         if(this.getRank() == 1){ //mouse
 
-                            System.out.println("is mouse");
+                            //System.out.println("is mouse");
 
                             if(mouseValidMove(pieceOnDestination)){
                                 legalMoves.add(new Move.AttackMove(

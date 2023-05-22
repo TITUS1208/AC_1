@@ -186,4 +186,6 @@ public class MainFrame extends JFrame {
         chessboard = new Chessboard(this);
         add(chessboard);
     }
+
+
 }
