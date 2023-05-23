@@ -2,7 +2,6 @@ package View;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,7 +62,7 @@ public class UsernamePassword {
                 }
             }
         }
-        System.out.println(sortedMap);
+        // System.out.println(sortedMap);
         return sortedMap;
     }
 

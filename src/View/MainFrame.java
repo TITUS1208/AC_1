@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
 
     private JLabel playerLabel;
     private JLabel roundLabel;
+    private JLabel timerLabel;
 
     private JFileChooser loadFC;
 
@@ -57,23 +58,27 @@ public class MainFrame extends JFrame {
         addSettingsButton();
         addPlayerLabel();
         addRoundLabel();
+        addTimerLabel();
         addChessboard();
 
         layoutControl();
+        TimerTasks.main(timerLabel);
     }
 
     public void layoutControl() {
         playerLabel.setBounds(30 + 7 * 70 + 115, 30, 300, 50);
         roundLabel.setBounds(30 + 7 * 70 + 155, 60, 300, 50);
-        restartButton.setBounds(30 + 7 * 70 + 100, 80 + 50, buttonWidth,
+        timerLabel.setBounds(30 + 7 * 70 + 80, 90, 300, 50);
+
+        restartButton.setBounds(30 + 7 * 70 + 100, 100 + 50, buttonWidth,
                 buttonHeight);
-        undoButton.setBounds(30 + 7 * 70 + 100, 80 + buttonHeight + 50 * 2, buttonWidth,
+        undoButton.setBounds(30 + 7 * 70 + 100, 100 + buttonHeight + 50 * 2, buttonWidth,
                 buttonHeight);
-        saveButton.setBounds(30 + 7 * 70 + 100, 80 + buttonHeight * 2 + 50 * 3, buttonWidth,
+        saveButton.setBounds(30 + 7 * 70 + 100, 100 + buttonHeight * 2 + 50 * 3, buttonWidth,
                 buttonHeight);
-        loadButton.setBounds(30 + 7 * 70 + 100, 80 + buttonHeight * 3 + 50 * 4, buttonWidth,
+        loadButton.setBounds(30 + 7 * 70 + 100, 100 + buttonHeight * 3 + 50 * 4, buttonWidth,
                 buttonHeight);
-        backButton.setBounds(30 + 7 * 70 + 100, 80 + buttonHeight * 4 + 50 * 5, buttonWidth,
+        backButton.setBounds(30 + 7 * 70 + 100, 100 + buttonHeight * 4 + 50 * 5, buttonWidth,
                 buttonHeight);
         settingsButton.setBounds(0, 0, 36, 36);
         chessboard.setBounds(36, 36, 75 * 7, 75 * 9);
@@ -185,9 +190,17 @@ public class MainFrame extends JFrame {
     private void addRoundLabel() {
         roundLabel = new JLabel("Round 1"); // Get changed every move in controller using setText()
         roundLabel.setHorizontalTextPosition(JLabel.CENTER);
-        playerLabel.setVerticalTextPosition(JLabel.CENTER);
+        roundLabel.setVerticalTextPosition(JLabel.CENTER);
         roundLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
         add(roundLabel);
+    }
+
+    private void addTimerLabel() {
+        timerLabel = new JLabel("Round ends in: 60 seconds"); // Get changed every move in controller using setText()
+        timerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        timerLabel.setVerticalTextPosition(JLabel.CENTER);
+        timerLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
+        add(timerLabel);
     }
 
     private void addChessboard() {
