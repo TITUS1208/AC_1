@@ -3,7 +3,7 @@ Haoyang
 - exe
 
 Titus
-- undo/redo
+- undo
 - load
     - check illegal positions
 - save

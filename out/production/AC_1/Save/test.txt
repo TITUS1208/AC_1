@@ -1,13 +1,9 @@
 Haoyang
-- combine chessboard and menu
-- restart
-- change theme
-- log in & register
-
+- change theme, animation
+- exe
 
 Titus
-- possible moves (done)
-- undo/redo
+- undo
 - load
     - check illegal positions
 - save

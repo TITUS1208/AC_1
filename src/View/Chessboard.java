@@ -2,10 +2,8 @@ package View;
 
 import Model.AudioPlayer;
 import Model.board.*;
-import Model.pieces.Alliance;
 import Model.pieces.Piece;
 import Model.player.MoveTransition;
-import com.sun.tools.javac.Main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,14 +30,19 @@ public class Chessboard extends JPanel {
     private JFrame beginFrame;
     private ArrayList<TilePanel> boardTiles;
     private UsernamePassword username_pw;
+    public ArrayList<Board> boardHistory;
+    public ArrayList<String> moveHistory;
 
     public Chessboard(JFrame frame, JFrame beginFrame, UsernamePassword username_pw) {
         setLayout(new GridLayout(9, 7));
+        boardHistory = new ArrayList<>();
+        moveHistory = new ArrayList<>();
         this.frame = frame;
         this.beginFrame = beginFrame;
         this.username_pw = username_pw;
         // chessBoard = Board.createDefaultBoard();
         chessBoard = Board.testBoard1();
+        boardHistory.add(chessBoard);
         boardTiles = new ArrayList<>();
         for (int i = 0; i < BoardUtils.BOARD_SIZE; i++) {
             TilePanel tile = new TilePanel(this, i);
@@ -48,6 +51,18 @@ public class Chessboard extends JPanel {
         }
         this.highlight = false;
         validate();
+    }
+
+    public void loadPreviousBoard(ArrayList<Board> boardHistory){
+        try {
+            chessBoard = boardHistory.get(boardHistory.size() - 2);
+            boardHistory.remove(boardHistory.size()-1);
+            System.out.println("load");
+            drawBoard(chessBoard);
+        } catch (IndexOutOfBoundsException e){
+            System.out.println("cannot load board");
+        }
+
     }
 
     public void drawBoard(Board board) {
@@ -60,6 +75,10 @@ public class Chessboard extends JPanel {
         repaint();
     }
 
+    public Board getBoard(){
+        return chessBoard;
+    }
+
     public void drawBoard(Board board, ArrayList<Integer> highlights) {
         removeAll();
         for (TilePanel tilePanel : boardTiles) {
@@ -69,6 +88,7 @@ public class Chessboard extends JPanel {
         validate();
         repaint();
     }
+
 
     private class TilePanel extends JPanel {
         private int tileNum;
@@ -108,7 +128,7 @@ public class Chessboard extends JPanel {
                                 if (tileNum == i)
                                     isPossibleMove = true;
                             }
-
+//need moveHistory, board
                             if (isPossibleMove) {
                                 Move move = Move.CreateMove.createMove(chessBoard, selectedTile.getTileCoor(),
                                         destinationTile.getTileCoor());
@@ -116,8 +136,12 @@ public class Chessboard extends JPanel {
                                 if (moveTransition.getMoveStatus().isDone()) {
                                     chessBoard = moveTransition.getBoard();
                                     System.out.println(moveCommand());
+
+                                    boardHistory.add(chessBoard);
+                                    moveHistory.add(moveCommand());
                                 }
                             }
+
                             // TODO move log
                             clearSelection();
                         }

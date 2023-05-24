@@ -1,8 +1,11 @@
 package View;
 
+import Model.board.Board;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -108,6 +111,22 @@ public class MainFrame extends JFrame {
         undoButton.addActionListener(e -> {
             System.out.println("undoButton being clicked");
             // Prompts undo action here via controller
+
+            chessboard.loadPreviousBoard(chessboard.boardHistory);
+
+            /*
+            ArrayList<String> moveHistory = chessboard.moveHistory;
+            Board board = chessboard.getBoard();
+            String previousMove = moveHistory.remove(moveHistory.size()-1);
+            String[] moveInfo = previousMove.split(" ");
+            String piece = moveInfo[0];
+            int currentCoordinate = Integer.valueOf(moveInfo[1]);
+            int destinationCoordinate = Integer.valueOf(moveInfo[2]);
+
+             */
+
+
+
         });
         add(undoButton);
     }

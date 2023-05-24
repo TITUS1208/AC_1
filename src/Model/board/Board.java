@@ -211,6 +211,10 @@ public class Board {
         return blackPlayer;
     }
 
+    public void loadBoard(ArrayList<String> moveHistory, int index){
+
+    }
+
 
 
 
