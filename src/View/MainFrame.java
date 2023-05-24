@@ -5,6 +5,9 @@ import Model.board.Board;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -112,20 +115,7 @@ public class MainFrame extends JFrame {
             System.out.println("undoButton being clicked");
             // Prompts undo action here via controller
 
-            chessboard.loadPreviousBoard(chessboard.boardHistory);
-
-            /*
-            ArrayList<String> moveHistory = chessboard.moveHistory;
-            Board board = chessboard.getBoard();
-            String previousMove = moveHistory.remove(moveHistory.size()-1);
-            String[] moveInfo = previousMove.split(" ");
-            String piece = moveInfo[0];
-            int currentCoordinate = Integer.valueOf(moveInfo[1]);
-            int destinationCoordinate = Integer.valueOf(moveInfo[2]);
-
-             */
-
-
+            chessboard.loadPreviousBoard(chessboard.getBoardHistory());
 
         });
         add(undoButton);
@@ -135,13 +125,46 @@ public class MainFrame extends JFrame {
         saveButton = new JButton("SAVE");
         saveButton.setFont(new Font("Monaco", Font.BOLD, 17));
         saveButton.setFocusable(false);
-
         saveButton.addActionListener(e -> {
             System.out.println("saveButton being clicked");
+
+            Board initialBoard = chessboard.getInitialBoard();
+            int numberOfMoveHistory = chessboard.getMoveHistory().size();
+            ArrayList<String> moveHistory = chessboard.getMoveHistory();
+
             String fileName = JOptionPane.showInputDialog("File's name to save: ");
             while (fileName.equals("")) {
                 JOptionPane.showMessageDialog(this, "File's name must not be blank.");
                 fileName = JOptionPane.showInputDialog("File's name to save:");
+
+            }
+
+            try{
+                File obj = new File("src/save/", fileName+ ".txt");
+                if (obj.createNewFile()){
+                    //create new file successfully
+                    //System.out.println("save file");
+
+                    StringBuilder savedText = new StringBuilder();
+                    savedText.append(numberOfMoveHistory);
+                    savedText.append("\n");
+                    for (String move : moveHistory){
+                        savedText.append(move + "\n");
+                    }
+                    savedText.append(initialBoard.formatToText());
+                    //System.out.print(savedText);
+                    FileWriter writer = new FileWriter("src/save/" + fileName + ".txt");
+                    writer.write(savedText.toString());
+                    //System.out.println("Data written");
+                    writer.close();
+
+                } else{
+                    //TODO same name
+                    System.out.println("same file name");
+                }
+            } catch(IOException q){
+                //System.out.println("error");
+                //q.printStackTrace();
             }
             // Call save method from controller
         });

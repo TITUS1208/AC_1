@@ -4,6 +4,7 @@ Haoyang
 
 Titus
 - undo
+    - add error sound when cannot load previous move (extra)
 - load
     - check illegal positions
 - save

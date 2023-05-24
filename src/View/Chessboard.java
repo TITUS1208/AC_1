@@ -30,8 +30,9 @@ public class Chessboard extends JPanel {
     private JFrame beginFrame;
     private ArrayList<TilePanel> boardTiles;
     private UsernamePassword username_pw;
-    public ArrayList<Board> boardHistory;
-    public ArrayList<String> moveHistory;
+    private ArrayList<Board> boardHistory;
+    private ArrayList<String> moveHistory;
+    private final Board initialBoard;
 
     public Chessboard(JFrame frame, JFrame beginFrame, UsernamePassword username_pw) {
         setLayout(new GridLayout(9, 7));
@@ -40,9 +41,13 @@ public class Chessboard extends JPanel {
         this.frame = frame;
         this.beginFrame = beginFrame;
         this.username_pw = username_pw;
-        // chessBoard = Board.createDefaultBoard();
-        chessBoard = Board.testBoard1();
+
+        //Board initialization
+        chessBoard = Board.createDefaultBoard();
+        //chessBoard = Board.testBoard1();
+        initialBoard = chessBoard;
         boardHistory.add(chessBoard);
+
         boardTiles = new ArrayList<>();
         for (int i = 0; i < BoardUtils.BOARD_SIZE; i++) {
             TilePanel tile = new TilePanel(this, i);
@@ -63,6 +68,18 @@ public class Chessboard extends JPanel {
             System.out.println("cannot load board");
         }
 
+    }
+
+    public ArrayList<Board> getBoardHistory(){
+        return boardHistory;
+    }
+
+    public ArrayList<String> getMoveHistory(){
+        return moveHistory;
+    }
+
+    public Board getInitialBoard(){
+        return initialBoard;
     }
 
     public void drawBoard(Board board) {
