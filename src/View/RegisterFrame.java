@@ -1,6 +1,9 @@
 package View;
 
 import javax.swing.*;
+
+import Model.AudioPlayer;
+
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -74,6 +77,7 @@ public class RegisterFrame extends JFrame {
         registerButton = new JButton("Register");
         registerButton.setFont(new Font("Monaco", Font.BOLD, 17));
         registerButton.addActionListener((e) -> {
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             String username = usernameField.getText();
             String password = String.valueOf(passwordField.getPassword());
             if (username.equals("")) {
@@ -94,7 +98,7 @@ public class RegisterFrame extends JFrame {
                     fileWriter.write("\n" + username + " " + password + " 0");
                     fileWriter.close();
                 } catch (Exception exp) {
-                    System.out.println(exp);
+                    exp.printStackTrace();
                 }
                 try {
                     dispose();
@@ -112,6 +116,7 @@ public class RegisterFrame extends JFrame {
         backButton = new JButton("Back");
         backButton.setFont(new Font("Monaco", Font.BOLD, 17));
         backButton.addActionListener((e) -> {
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             dispose();
             try {
                 new BeginFrame(Constant.BEGIN_FRAME_WIDTH, Constant.BEGIN_FRAME_HEIGHT);

@@ -26,15 +26,17 @@ public class Chessboard extends JPanel {
     private Piece selectedPiece;
     private boolean highlight;
     private Board chessBoard;
-    private JFrame frame;
-    private JFrame beginFrame;
+    private MainFrame frame;
+    private BeginFrame beginFrame;
     private ArrayList<TilePanel> boardTiles;
     private UsernamePassword username_pw;
     public ArrayList<Board> boardHistory;
     public ArrayList<String> moveHistory;
 
-    public Chessboard(JFrame frame, JFrame beginFrame, UsernamePassword username_pw) {
+    public Chessboard(MainFrame frame, BeginFrame beginFrame, UsernamePassword username_pw) {
         setLayout(new GridLayout(9, 7));
+        setBorder(BorderFactory.createMatteBorder(
+                2, 2, 2, 2, Color.BLACK));
         boardHistory = new ArrayList<>();
         moveHistory = new ArrayList<>();
         this.frame = frame;
@@ -53,14 +55,14 @@ public class Chessboard extends JPanel {
         validate();
     }
 
-    public void loadPreviousBoard(ArrayList<Board> boardHistory){
+    public void loadPreviousBoard(ArrayList<Board> boardHistory) {
         try {
             chessBoard = boardHistory.get(boardHistory.size() - 2);
-            boardHistory.remove(boardHistory.size()-1);
-            System.out.println("load");
+            boardHistory.remove(boardHistory.size() - 1);
+            System.out.println("loaded previous board");
             drawBoard(chessBoard);
-        } catch (IndexOutOfBoundsException e){
-            System.out.println("cannot load board");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("cannot load previous board");
         }
 
     }
@@ -75,7 +77,7 @@ public class Chessboard extends JPanel {
         repaint();
     }
 
-    public Board getBoard(){
+    public Board getBoard() {
         return chessBoard;
     }
 
@@ -89,13 +91,14 @@ public class Chessboard extends JPanel {
         repaint();
     }
 
-
-    private class TilePanel extends JPanel {
+    public class TilePanel extends JPanel {
         private int tileNum;
 
         public TilePanel(Chessboard chessboard, int tileNum) {
             this.tileNum = tileNum;
             setLayout(new GridLayout());
+            setBorder(BorderFactory.createMatteBorder(
+                    2, 2, 2, 2, Color.BLACK));
             setPreferredSize(BoardUtils.TILE_PANEL_DIMENSION);
             assignTileColor();
             assignPieceOnTile(chessBoard);
@@ -104,7 +107,7 @@ public class Chessboard extends JPanel {
                 public void mouseClicked(MouseEvent e) {
                     // boolean gameOver = false;
                     if (isLeftMouseButton(e)) {
-                        AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
+                        AudioPlayer.playSoundEffect("resource\\Audio\\click2.wav");
                         if (selectedTile == null) {
                             // first click --> select piece
                             selectedTile = chessBoard.getTile(tileNum);
@@ -128,7 +131,7 @@ public class Chessboard extends JPanel {
                                 if (tileNum == i)
                                     isPossibleMove = true;
                             }
-//need moveHistory, board
+                            // need moveHistory, board
                             if (isPossibleMove) {
                                 Move move = Move.CreateMove.createMove(chessBoard, selectedTile.getTileCoor(),
                                         destinationTile.getTileCoor());
@@ -150,38 +153,42 @@ public class Chessboard extends JPanel {
                             @Override
                             public void run() {
                                 drawBoard(chessBoard);
-
                                 // TODO check game status
                                 if (chessBoard.isGameOver()) {
+                                    AudioPlayer.playSoundEffect("resource\\Audio\\congratulations.wav");
                                     // System.out.println("Game Over");
                                     String winner = "";
                                     if (chessBoard.getWhitePlayer().checkDen()) {
                                         // System.out.println("Black wins");
-                                        winner = "player1";
+                                        winner = "Player 1";
                                     } else if (chessBoard.getBlackPlayer().checkDen()) {
                                         // System.out.println("White wins");
-                                        winner = "player2";
+                                        winner = "Player 2";
                                     }
 
-                                    BeginFrame beginFrame = null;
-                                    try {
-                                        beginFrame = new BeginFrame(Constant.BEGIN_FRAME_WIDTH,
-                                                Constant.BEGIN_FRAME_HEIGHT);
-                                    } catch (FileNotFoundException ex) {
-                                        throw new RuntimeException(ex);
-                                    }
+                                    // BeginFrame beginFrame = null;
+                                    // try {
+                                    // beginFrame = new BeginFrame(Constant.BEGIN_FRAME_WIDTH,
+                                    // Constant.BEGIN_FRAME_HEIGHT);
+                                    // } catch (FileNotFoundException ex) {
+                                    // throw new RuntimeException(ex);
+                                    // }
 
                                     while (true) {
                                         int result = JOptionPane.showConfirmDialog(null,
-                                                String.format("%s wins, congratulation!", winner)
+                                                String.format("%s wins, Congratulations!", winner)
                                                         + "\n Do you wanna continue?",
                                                 "Jungle_CS109", JOptionPane.YES_NO_OPTION,
                                                 JOptionPane.QUESTION_MESSAGE);
 
                                         if (result == JOptionPane.YES_OPTION) {
                                             frame.dispose();
-                                            new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT,
-                                                    Constant.JUNGLE_ICON, beginFrame, username_pw);
+                                            try {
+                                                new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT,
+                                                        Constant.JUNGLE_ICON, beginFrame, username_pw);
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
 
                                             break;
                                         } else if (result == JOptionPane.NO_OPTION) {
@@ -225,22 +232,18 @@ public class Chessboard extends JPanel {
 
                 @Override
                 public void mousePressed(MouseEvent e) {
-
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-
                 }
             });
 
@@ -288,7 +291,6 @@ public class Chessboard extends JPanel {
                             board.getTile(this.tileNum).getPiece().toString() + ".png";
                     // System.out.println(path);
                     BufferedImage image = ImageIO.read(new File(path));
-
                     Image img = new ImageIcon(image).getImage();
                     img = img.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
                     add(new JLabel(new ImageIcon(img)));
@@ -297,16 +299,45 @@ public class Chessboard extends JPanel {
                     e.printStackTrace();
                 }
             }
+            if (tileNum == 3 || tileNum == 59) {
+                BufferedImage image;
+                try {
+                    image = ImageIO.read(new File("resource/Icon/dens.png"));
+                    Image img = new ImageIcon(image).getImage();
+                    img = img.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+                    add(new JLabel(new ImageIcon(img)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        private void assignTileColor() {
+        public void assignTileColor() {
             Terrain terrain = BoardUtils.TERRAIN_BOARD.get(tileNum);
-            setBackground(tileNum % 2 == 0 ? terrain.getTileColor().brighter() : terrain.getTileColor().darker());
+            Color brighter = terrain.getTileColor().brighter();
+            Color darker = terrain.getTileColor().darker();
+            setBackground(tileNum % 2 == 0 ? brighter : darker);
+            if (terrain.getTileColor().equals(new Color(255, 182, 193))) {
+                brighter = new Color(255, 192, 203);
+                setBackground(tileNum % 2 == 0 ? brighter : darker);
+            }
+            if (terrain.getTileColor().equals(new Color(116, 204, 244))) {
+                setBackground(new Color(116, 204, 244));
+            }
         }
 
         private void assignTileColor(ArrayList<Integer> highlights) {
             Terrain terrain = BoardUtils.TERRAIN_BOARD.get(tileNum);
-            setBackground(tileNum % 2 == 0 ? terrain.getTileColor().brighter() : terrain.getTileColor().darker());
+            Color brighter = terrain.getTileColor().brighter();
+            Color darker = terrain.getTileColor().darker();
+            setBackground(tileNum % 2 == 0 ? brighter : darker);
+            if (terrain.getTileColor().equals(new Color(255, 182, 193))) {
+                brighter = new Color(255, 192, 203);
+                setBackground(tileNum % 2 == 0 ? brighter : darker);
+            }
+            if (terrain.getTileColor().equals(new Color(116, 204, 244))) {
+                setBackground(new Color(116, 204, 244));
+            }
 
             boolean isHighlighted = false;
             for (int i : highlights) {

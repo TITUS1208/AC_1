@@ -1,13 +1,14 @@
 package View;
 
 import javax.swing.*;
-import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
-import java.awt.Color;
+import Model.AudioPlayer;
+
 import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class BeginFrame extends JFrame {
     private final int frameWidth;
@@ -43,7 +44,6 @@ public class BeginFrame extends JFrame {
         setLayout(null);
         setVisible(true);
         setResizable(false);
-        getContentPane().setBackground(Color.LIGHT_GRAY); // Change soon
         jungleIcon = new ImageIcon("resource/Icon/jungleIcon.png");
         setIconImage(jungleIcon.getImage());
 
@@ -94,12 +94,19 @@ public class BeginFrame extends JFrame {
         loginButton = new JButton("Login");
         loginButton.setFont(new Font("Monaco", Font.BOLD, 17));
         loginButton.addActionListener((e) -> {
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             login();
             if (isLogin) {
                 if (isChecked) {
                     JOptionPane.showMessageDialog(this, "Successful login!", "Jungle_CS109",
                             JOptionPane.INFORMATION_MESSAGE);
-                    new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, jungleIcon, this, username_pw);
+                    try {
+                        new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, jungleIcon, this,
+                                username_pw);
+                        AudioPlayer.playSoundEffect("resource\\Audio\\welcome.wav");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                     this.setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(this, "Please agree to the Terms & Conditions!", "Jungle_CS109",
@@ -113,6 +120,7 @@ public class BeginFrame extends JFrame {
     private void addRegisterButton() {
         registerButton = new JButton("Register");
         registerButton.addActionListener((e) -> {
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             dispose();
             new RegisterFrame(jungleIcon, username_pw);
         });
