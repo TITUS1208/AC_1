@@ -3,6 +3,8 @@ package View;
 import javax.swing.*;
 
 import Model.AudioPlayer;
+import Model.board.BoardUtils;
+import Model.board.Terrain;
 
 import java.awt.Font;
 import java.awt.event.ItemEvent;
@@ -101,6 +103,10 @@ public class BeginFrame extends JFrame {
                     JOptionPane.showMessageDialog(this, "Successful login!", "Jungle_CS109",
                             JOptionPane.INFORMATION_MESSAGE);
                     try {
+                        for (int i = 0; i < 63; i++) {
+                            Terrain terrain = BoardUtils.TERRAIN_BOARD.get(i);
+                            terrain.changeGrassColor();
+                        }
                         new MainFrame(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, jungleIcon, this,
                                 username_pw);
                         AudioPlayer.playSoundEffect("resource\\Audio\\welcome.wav");

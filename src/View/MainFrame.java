@@ -6,9 +6,12 @@ import Model.board.BoardUtils;
 import Model.board.Terrain;
 import View.Chessboard.TilePanel;
 
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -114,6 +117,12 @@ public class MainFrame extends JFrame {
             if (temp == JOptionPane.YES_OPTION) {
                 setVisible(false);
                 try {
+                    if (!isBlack) {
+                        for (int i = 0; i < 63; i++) {
+                            Terrain terrain = BoardUtils.TERRAIN_BOARD.get(i);
+                            terrain.changeGrassColor();
+                        }
+                    }
                     new MainFrame(frameWidth, frameHeight, jungleIcon, beginFrame, username_pw);
                 } catch (IOException e1) {
                     e1.printStackTrace();
@@ -185,8 +194,11 @@ public class MainFrame extends JFrame {
         backButton.setFocusable(false);
         backButton.addActionListener(e -> {
             AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
-            setVisible(false);
-            beginFrame.setVisible(true);
+            int temp = JOptionPane.showConfirmDialog(this, "Are you leaving?\nMake sure you save before you leave!");
+            if (temp == JOptionPane.YES_OPTION) {
+                setVisible(false);
+                beginFrame.setVisible(true);
+            }
         });
         add(backButton);
     }
@@ -290,5 +302,17 @@ public class MainFrame extends JFrame {
         chessboard.drawBoard(Board.testBoard1());
         repaint();
         revalidate();
+        try {
+            click(480, 300);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void click(int x, int y) throws AWTException {
+        Robot bot = new Robot();
+        bot.mouseMove(x, y);
+        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 }
