@@ -13,7 +13,7 @@ public class Main {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            // AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
+            AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
         });
     }
 }
