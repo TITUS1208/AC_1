@@ -15,6 +15,7 @@ import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -139,7 +140,7 @@ public class MainFrame extends JFrame {
 
         undoButton.addActionListener(e -> {
             AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
-            chessboard.loadPreviousBoard(chessboard.boardHistory);
+            chessboard.loadPreviousBoard(chessboard.getBoardHistory());
             /*
              * ArrayList<String> moveHistory = chessboard.moveHistory;
              * Board board = chessboard.getBoard();
@@ -164,6 +165,43 @@ public class MainFrame extends JFrame {
             while (fileName.equals("")) {
                 JOptionPane.showMessageDialog(this, "File's name must not be blank.");
                 fileName = JOptionPane.showInputDialog("File's name to save:");
+            }
+            String path = "src/Save/" + fileName + ".txt";
+            System.out.println("File name; " + path);
+            try{
+                File obj = new File(path);
+
+                if (obj.createNewFile()){
+                    FileWriter writer = new FileWriter(path);
+                    //writer.write("Hello world");
+                    //writer.close();
+
+                    obj.createNewFile();
+                    System.out.println("created New File");
+                    StringBuilder sBuilder = new StringBuilder();
+                    int boardCount = chessboard.getBoardHistory().size();
+                    System.out.println(boardCount);
+                    for (int j = 0; j < boardCount; j++) {
+                        System.out.println(chessboard.getBoardHistory().get(j));
+                        String text = chessboard.getBoardHistory().get(j).getAllActivePiece().size() + "\n";
+                        sBuilder.append(text);
+                        for (int k = 0; k < BoardUtils.BOARD_SIZE; k++){
+                            text = chessboard.getBoardHistory().get(j).tileInfo(k);
+                            if (text != null) sBuilder.append(text + "\n");
+                        }
+                    }
+                    System.out.println();
+                    writer.write(sBuilder.toString());
+                    System.out.println(sBuilder);
+                    writer.close();
+
+
+                } else{
+                    System.out.println("same name TODO");
+                    //file alr exist
+                }
+            } catch(IOException q){
+                q.printStackTrace();;
             }
             // Call save method from controller
         });

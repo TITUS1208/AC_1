@@ -153,7 +153,7 @@ public class Piece {
 
     private boolean mouseValidMove(Piece pieceOnDestination){
         if (!inWater() && pieceOnDestination.getRank() == 8){
-            System.out.println("is not in water and is elephant");
+            //System.out.println("is not in water and is elephant");
             return true;
         } else if (pieceOnDestination.inTrap()){
             return true;

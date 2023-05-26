@@ -29,6 +29,23 @@ public class Board {
         return gameBoard.get(tileCoordinate);
     }
 
+    public String tileInfo(int tileCoordinate){
+        if (getTile(tileCoordinate).getPiece() == null) {
+            return null;
+        }
+        String piece = getTile(tileCoordinate).getPiece().toString();
+        return String.format("%d %s%s", tileCoordinate, getTile(tileCoordinate).getPiece().getPieceAlliance().toString().substring(0,1), piece);
+    }
+
+    public ArrayList<Piece> getAllActivePiece(){
+        ArrayList<Piece> pieces = new ArrayList<>();
+        pieces.addAll(whitePieces);
+        pieces.addAll(blackPieces);
+        return pieces;
+    }
+
+
+
 
 
 
@@ -211,9 +228,11 @@ public class Board {
         return blackPlayer;
     }
 
-    public void loadBoard(ArrayList<String> moveHistory, int index){
-
+    public ArrayList<Board> loadBoards(ArrayList<String> piecesInfo){
+        return null;
     }
+
+
 
 
 
