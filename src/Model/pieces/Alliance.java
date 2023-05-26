@@ -11,6 +11,9 @@ public enum Alliance {
         }
         public boolean isBlack(){return true;}
         public boolean isWhite(){return false;}
+        public String toString(){
+            return "WHITE";
+        }
     },
     WHITE{
         public Player choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer){
@@ -18,6 +21,9 @@ public enum Alliance {
         }
         public boolean isBlack(){return false;}
         public boolean isWhite(){return true;}
+        public String toString(){
+            return "BLACK";
+        }
     };
 
     public abstract Player choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer);

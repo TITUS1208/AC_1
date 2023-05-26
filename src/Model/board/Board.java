@@ -11,6 +11,8 @@ import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 */
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 
@@ -228,8 +230,97 @@ public class Board {
         return blackPlayer;
     }
 
-    public ArrayList<Board> loadBoards(ArrayList<String> piecesInfo){
-        return null;
+    public static ArrayList<Board> loadBoards(String path){
+
+        ArrayList<Board> boards = new ArrayList<>();
+        ArrayList<Integer> indices = new ArrayList<>();
+        ArrayList<String> piecesInfo = new ArrayList<>();
+        try{
+            File myObj = new File(path);
+            Scanner myReader = new Scanner(myObj);
+            //String ally = myReader.nextLine();
+            //Alliance turn = ally.equals("WHITE") ? Alliance.WHITE : Alliance.BLACK;
+            while (myReader.hasNextLine()) {
+                int index = Integer.valueOf(myReader.nextLine());
+                indices.add(index);
+                for (int i = 0; i < index; i++){
+                    piecesInfo.add(myReader.nextLine());
+                }
+            }
+        }catch (FileNotFoundException q){
+            q.printStackTrace();
+        }
+
+        //TODO remove print
+        System.out.println(indices);
+        System.out.println(piecesInfo);
+
+        int indexSum = 0;
+
+        for (int i = 0; i < indices.size(); i++){
+            Builder builder = new Builder();
+            int prevIndexSum = indexSum;
+            indexSum += indices.get(i);
+            for (int j = prevIndexSum; j < indexSum; j++){
+                builder.setPiece(textToPiece(piecesInfo.get(j)));
+            }
+            builder.setTurn((i%2==1) ? Alliance.WHITE : Alliance.BLACK);
+            boards.add(builder.build());
+        }
+
+
+        return boards;
+    }
+
+    public static Piece textToPiece(String data){
+        String[] split = data.split(" ");
+        int tileCoordinate = Integer.valueOf(split[0]);
+        String ally = split[1].substring(0,1);
+        String animal = split[1].substring(1,3);
+
+        Alliance alliance = ally.equals("W") ? Alliance.WHITE : Alliance.BLACK;
+        int rank = 0;
+        String name = null;
+
+        switch (animal){
+            case("RA"):
+                name = "Rat";
+                rank = 1;
+                break;
+            case("CA"):
+                name = "Cat";
+                rank = 2;
+                break;
+            case("DO"):
+                name = "Dog";
+                rank = 3;
+                break;
+            case("WO"):
+                name = "Wolf";
+                rank = 4;
+                break;
+            case("LE"):
+                name = "Leopard";
+                rank = 5;
+                break;
+            case("TI"):
+                name = "Tiger";
+                rank = 6;
+                break;
+            case("LI"):
+                name = "Lion";
+                rank = 7;
+                break;
+            case("EL"):
+                name = "Elephant";
+                rank = 8;
+                break;
+        }
+
+        Piece piece = new Piece(tileCoordinate, alliance, rank, name);
+
+
+        return piece;
     }
 
 

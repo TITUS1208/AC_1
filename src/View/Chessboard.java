@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -31,7 +30,7 @@ public class Chessboard extends JPanel {
     private ArrayList<TilePanel> boardTiles;
     private UsernamePassword username_pw;
     private ArrayList<Board> boardHistory;
-    private ArrayList<String> moveHistory;
+    //private ArrayList<String> moveHistory;
     private final Board initialBoard;
 
     public Chessboard(MainFrame frame, BeginFrame beginFrame, UsernamePassword username_pw) {
@@ -39,7 +38,7 @@ public class Chessboard extends JPanel {
         setBorder(BorderFactory.createMatteBorder(
                 2, 2, 2, 2, Color.BLACK));
         boardHistory = new ArrayList<>();
-        moveHistory = new ArrayList<>();
+        //moveHistory = new ArrayList<>();
         this.frame = frame;
         this.beginFrame = beginFrame;
         this.username_pw = username_pw;
@@ -76,9 +75,11 @@ public class Chessboard extends JPanel {
         return boardHistory;
     }
 
-    public ArrayList<String> getMoveHistory(){
+    /*public ArrayList<String> getMoveHistory(){
         return moveHistory;
     }
+
+     */
 
     public Board getInitialBoard(){
         return initialBoard;
@@ -106,6 +107,14 @@ public class Chessboard extends JPanel {
         }
         validate();
         repaint();
+    }
+
+    public void setBoardHistory(ArrayList<Board> boardHistory) {
+        this.boardHistory = boardHistory;
+    }
+
+    public void setBoard(Board board){
+        this.chessBoard = board;
     }
 
     public class TilePanel extends JPanel {
@@ -158,7 +167,7 @@ public class Chessboard extends JPanel {
                                     System.out.println(moveCommand());
 
                                     boardHistory.add(chessBoard);
-                                    moveHistory.add(moveCommand());
+                                    //moveHistory.add(moveCommand());
                                 }
                             }
 
