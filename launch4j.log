@@ -1,0 +1,18 @@
+
+
+Version:	3.50
+CmdLine:	C:\Users\aaron\OneDrive\Documents\AC_1\Jungle_CS109.exe --l4j-debug
+JNI:		No
+WOW64:		Yes
+Working dir:	C:\Users\aaron\OneDrive\Documents\AC_1\.
+Requires JDK:	No
+Requires 64-Bit: No
+Java min ver:	
+Java max ver:	
+JRE paths:	C:\Users\aaron\Documents\CS109\jdk-17.0.2
+Check launcher:	C:\Users\aaron\Documents\CS109\jdk-17.0.2\bin\javaw.exe (OK)
+Version string: 1.017.000_002 / 64-Bit (OK)
+Launcher:	C:\Users\aaron\Documents\CS109\jdk-17.0.2\bin\javaw.exe
+Launcher args:	-jar "C:\Users\aaron\OneDrive\Documents\AC_1\Jungle_CS109.exe"
+Args length:	62/32768 chars
+Exit code:	0
