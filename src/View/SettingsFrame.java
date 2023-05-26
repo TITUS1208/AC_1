@@ -6,7 +6,7 @@ import Model.AudioPlayer;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.FileNotFoundException;
-import java.util.Set;
+import java.io.IOException;
 
 public class SettingsFrame extends JDialog {
     private final int buttonWidth = 190;
@@ -23,10 +23,13 @@ public class SettingsFrame extends JDialog {
     private ImageIcon jungleIcon;
     private UsernamePassword username_pw;
     private int count = 2;
+    private MainFrame mainFrame;
 
-    public SettingsFrame(ImageIcon jungleIcon, UsernamePassword username_pw) throws FileNotFoundException {
+    public SettingsFrame(ImageIcon jungleIcon, UsernamePassword username_pw, MainFrame mainFrame)
+            throws FileNotFoundException {
         this.jungleIcon = jungleIcon;
         this.username_pw = username_pw;
+        this.mainFrame = mainFrame;
         setTitle("Jungle_CS109");
         setSize(300, 490);
         setLocationRelativeTo(null);
@@ -61,10 +64,14 @@ public class SettingsFrame extends JDialog {
         changeThemeButton = new JButton("Change Theme");
         changeThemeButton.setFont(new Font("Serif", Font.BOLD, 16));
         changeThemeButton.setFocusable(false);
-
         changeThemeButton.addActionListener(e -> {
-            System.out.println("changeThemeButton being clicked");
-            // Change theme here
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
+            setVisible(false);
+            try {
+                mainFrame.changeBackground();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
         add(changeThemeButton);
     }
@@ -73,14 +80,12 @@ public class SettingsFrame extends JDialog {
         turnOnOffButton = new JButton("Turn OFF BGM");
         turnOnOffButton.setFont(new Font("Serif", Font.BOLD, 16));
         turnOnOffButton.setFocusable(false);
-
         turnOnOffButton.addActionListener(e -> {
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             if (count % 2 == 0) {
-                System.out.println("BGM is turned off");
                 turnOnOffButton.setText("Play BGM");
                 AudioPlayer.stopPlaying();
             } else {
-                System.out.println("BGM is being played again");
                 turnOnOffButton.setText("Turn OFF BGM");
                 AudioPlayer.continuePlaying();
                 AudioPlayer.playBgm("resource\\Audio\\Bunny.wav");
@@ -95,9 +100,8 @@ public class SettingsFrame extends JDialog {
         rankingButton = new JButton("Ranking List");
         rankingButton.setFont(new Font("Serif", Font.BOLD, 16));
         rankingButton.setFocusable(false);
-
         rankingButton.addActionListener(e -> {
-            System.out.println("rankingButton being clicked");
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             JOptionPane.showMessageDialog(this, rankingPanel(), "Jungle_CS109",
                     JOptionPane.INFORMATION_MESSAGE);
         });
@@ -108,9 +112,8 @@ public class SettingsFrame extends JDialog {
         backButton = new JButton("Back");
         backButton.setFont(new Font("Serif", Font.BOLD, 16));
         backButton.setFocusable(false);
-
         backButton.addActionListener(e -> {
-            System.out.println("backButton being clicked");
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             dispose();
         });
         add(backButton);
@@ -131,8 +134,9 @@ public class SettingsFrame extends JDialog {
             JLabel tempLabel = new JLabel(i + 1 + ". " + username_pw.getUsername_score().keySet().toArray()[i]
                     + " " + username_pw.getUsername_score().values().toArray()[i]);
             rankingPanel.add(tempLabel);
-            System.out.println(i + 1 + ". " + username_pw.getUsername_score().keySet().toArray()[i]
-                    + " " + username_pw.getUsername_score().values().toArray()[i]);
+            // System.out.println(i + 1 + ". " +
+            // username_pw.getUsername_score().keySet().toArray()[i]
+            // + " " + username_pw.getUsername_score().values().toArray()[i]);
         }
         return rankingPanel;
     }

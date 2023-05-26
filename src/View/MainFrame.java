@@ -1,15 +1,20 @@
 package View;
 
+import Model.AudioPlayer;
 import Model.board.Board;
+import Model.board.BoardUtils;
+import Model.board.Terrain;
+import View.Chessboard.TilePanel;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.FileNotFoundException;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.FileWriter;
-import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
@@ -28,24 +33,33 @@ public class MainFrame extends JFrame {
     private JLabel playerLabel;
     private JLabel roundLabel;
     private JLabel timerLabel;
+    private JLabel background;
+    private JLabel blackBG;
+    private JLabel pinkBG;
 
     private JFileChooser loadFC;
 
     private Chessboard chessboard;
 
-    private Icon settingsIcon;
+    private Icon whiteSettingsIcon;
+    private Icon blackSettingsIcon;
+
     private ImageIcon jungleIcon;
 
-    private JFrame beginFrame;
+    private BeginFrame beginFrame;
     private UsernamePassword username_pw;
+    private boolean isBlack;
 
-    public MainFrame(int frameWidth, int frameHeight, ImageIcon jungleIcon, JFrame beginFrame,
-            UsernamePassword username_pw) {
+    public MainFrame(int frameWidth, int frameHeight, ImageIcon jungleIcon, BeginFrame beginFrame,
+            UsernamePassword username_pw) throws IOException {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.jungleIcon = jungleIcon;
         this.beginFrame = beginFrame;
         this.username_pw = username_pw;
+        isBlack = true;
+        whiteSettingsIcon = new ImageIcon("resource/Icon/whiteSettingsIcon.png");
+        blackSettingsIcon = new ImageIcon("resource/Icon/blackSettingsIcon.png");
         setTitle("Jungle_CS109");
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);
@@ -53,7 +67,6 @@ public class MainFrame extends JFrame {
         setLayout(null);
         setVisible(true);
         setResizable(false);
-        getContentPane().setBackground(Color.LIGHT_GRAY); // Change soon
         setIconImage(jungleIcon.getImage());
 
         addRestartButton();
@@ -66,6 +79,7 @@ public class MainFrame extends JFrame {
         addRoundLabel();
         addTimerLabel();
         addChessboard();
+        addBackground();
 
         layoutControl();
         TimerTasks.main(timerLabel);
@@ -94,13 +108,16 @@ public class MainFrame extends JFrame {
         restartButton = new JButton("RESTART");
         restartButton.setFont(new Font("Monaco", Font.BOLD, 17));
         restartButton.setFocusable(false);
-
         restartButton.addActionListener(e -> {
-            System.out.println("restartButton being clicked");
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             int temp = JOptionPane.showConfirmDialog(this, "Are you sure to restart?");
             if (temp == JOptionPane.YES_OPTION) {
                 setVisible(false);
-                new MainFrame(frameWidth, frameHeight, jungleIcon, beginFrame, username_pw);
+                try {
+                    new MainFrame(frameWidth, frameHeight, jungleIcon, beginFrame, username_pw);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         add(restartButton);
@@ -112,11 +129,18 @@ public class MainFrame extends JFrame {
         undoButton.setFocusable(false);
 
         undoButton.addActionListener(e -> {
-            System.out.println("undoButton being clicked");
-            // Prompts undo action here via controller
-
-            chessboard.loadPreviousBoard(chessboard.getBoardHistory());
-
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
+            chessboard.loadPreviousBoard(chessboard.boardHistory);
+            /*
+             * ArrayList<String> moveHistory = chessboard.moveHistory;
+             * Board board = chessboard.getBoard();
+             * String previousMove = moveHistory.remove(moveHistory.size()-1);
+             * String[] moveInfo = previousMove.split(" ");
+             * String piece = moveInfo[0];
+             * int currentCoordinate = Integer.valueOf(moveInfo[1]);
+             * int destinationCoordinate = Integer.valueOf(moveInfo[2]);
+             * 
+             */
         });
         add(undoButton);
     }
@@ -126,45 +150,11 @@ public class MainFrame extends JFrame {
         saveButton.setFont(new Font("Monaco", Font.BOLD, 17));
         saveButton.setFocusable(false);
         saveButton.addActionListener(e -> {
-            System.out.println("saveButton being clicked");
-
-            Board initialBoard = chessboard.getInitialBoard();
-            int numberOfMoveHistory = chessboard.getMoveHistory().size();
-            ArrayList<String> moveHistory = chessboard.getMoveHistory();
-
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             String fileName = JOptionPane.showInputDialog("File's name to save: ");
             while (fileName.equals("")) {
                 JOptionPane.showMessageDialog(this, "File's name must not be blank.");
                 fileName = JOptionPane.showInputDialog("File's name to save:");
-
-            }
-
-            try{
-                File obj = new File("src/save/", fileName+ ".txt");
-                if (obj.createNewFile()){
-                    //create new file successfully
-                    //System.out.println("save file");
-
-                    StringBuilder savedText = new StringBuilder();
-                    savedText.append(numberOfMoveHistory);
-                    savedText.append("\n");
-                    for (String move : moveHistory){
-                        savedText.append(move + "\n");
-                    }
-                    savedText.append(initialBoard.formatToText());
-                    //System.out.print(savedText);
-                    FileWriter writer = new FileWriter("src/save/" + fileName + ".txt");
-                    writer.write(savedText.toString());
-                    //System.out.println("Data written");
-                    writer.close();
-
-                } else{
-                    //TODO same name
-                    System.out.println("same file name");
-                }
-            } catch(IOException q){
-                //System.out.println("error");
-                //q.printStackTrace();
             }
             // Call save method from controller
         });
@@ -175,9 +165,8 @@ public class MainFrame extends JFrame {
         loadButton = new JButton("LOAD");
         loadButton.setFont(new Font("Monaco", Font.BOLD, 17));
         loadButton.setFocusable(false);
-
         loadButton.addActionListener(e -> {
-            System.out.println("loadButton being clicked");
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             loadFC = new JFileChooser("./src/Save");
             loadFC.setDialogTitle("Load a file");
             int temp = loadFC.showOpenDialog(this);
@@ -194,9 +183,8 @@ public class MainFrame extends JFrame {
         backButton = new JButton("BACK");
         backButton.setFont(new Font("Monaco", Font.BOLD, 17));
         backButton.setFocusable(false);
-
         backButton.addActionListener(e -> {
-            System.out.println("backButton being clicked");
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             setVisible(false);
             beginFrame.setVisible(true);
         });
@@ -204,16 +192,15 @@ public class MainFrame extends JFrame {
     }
 
     public void addSettingsButton() {
-        settingsIcon = new ImageIcon("resource/Icon/settingsIcon.png");
-        settingsButton = new JButton(settingsIcon);
+        settingsButton = new JButton(whiteSettingsIcon);
         settingsButton.setFocusable(false);
         settingsButton.setOpaque(false);
         settingsButton.setContentAreaFilled(false);
         settingsButton.setBorderPainted(false);
         settingsButton.addActionListener(e -> {
-            System.out.println("settingsButton being clicked");
+            AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             try {
-                new SettingsFrame(jungleIcon, username_pw);
+                new SettingsFrame(jungleIcon, username_pw, this);
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
             }
@@ -226,6 +213,7 @@ public class MainFrame extends JFrame {
         playerLabel.setHorizontalTextPosition(JLabel.CENTER);
         playerLabel.setVerticalTextPosition(JLabel.CENTER);
         playerLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
+        playerLabel.setForeground(Color.white);
         add(playerLabel);
     }
 
@@ -234,14 +222,16 @@ public class MainFrame extends JFrame {
         roundLabel.setHorizontalTextPosition(JLabel.CENTER);
         roundLabel.setVerticalTextPosition(JLabel.CENTER);
         roundLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
+        roundLabel.setForeground(Color.white);
         add(roundLabel);
     }
 
     private void addTimerLabel() {
-        timerLabel = new JLabel("Round ends in: 60 seconds"); // Get changed every move in controller using setText()
+        timerLabel = new JLabel("Round ends in: 60 seconds");
         timerLabel.setHorizontalTextPosition(JLabel.CENTER);
         timerLabel.setVerticalTextPosition(JLabel.CENTER);
         timerLabel.setFont(new Font("Comic Sans", Font.BOLD, 19));
+        timerLabel.setForeground(Color.white);
         add(timerLabel);
     }
 
@@ -250,4 +240,55 @@ public class MainFrame extends JFrame {
         add(chessboard);
     }
 
+    private void addBackground() {
+        Image image = new ImageIcon("resource/Background/black.jpg").getImage();
+        image = image.getScaledInstance(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, Image.SCALE_DEFAULT);
+        ImageIcon icon = new ImageIcon(image);
+        blackBG = new JLabel(icon);
+        blackBG.setSize(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT);
+        blackBG.setLocation(0, 0);
+
+        image = new ImageIcon("resource/Background/pink.jpg").getImage();
+        image = image.getScaledInstance(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT, Image.SCALE_DEFAULT);
+        icon = new ImageIcon(image);
+        pinkBG = new JLabel(icon);
+        pinkBG.setSize(Constant.MAIN_FRAME_WIDTH, Constant.MAIN_FRAME_HEIGHT);
+        pinkBG.setLocation(0, 0);
+
+        background = blackBG;
+        add(background);
+    }
+
+    public void changeBackground() throws IOException {
+        if (isBlack) {
+            remove(background);
+            isBlack = false;
+            background = pinkBG;
+            add(background);
+            playerLabel.setForeground(Color.black);
+            roundLabel.setForeground(Color.black);
+            timerLabel.setForeground(Color.black);
+            settingsButton.setIcon(blackSettingsIcon);
+            for (int i = 0; i < 63; i++) {
+                Terrain terrain = BoardUtils.TERRAIN_BOARD.get(i);
+                terrain.changeGrassColorPink();
+            }
+        } else {
+            remove(background);
+            isBlack = true;
+            background = blackBG;
+            add(background);
+            playerLabel.setForeground(Color.white);
+            roundLabel.setForeground(Color.white);
+            timerLabel.setForeground(Color.white);
+            settingsButton.setIcon(whiteSettingsIcon);
+            for (int i = 0; i < 63; i++) {
+                Terrain terrain = BoardUtils.TERRAIN_BOARD.get(i);
+                terrain.changeGrassColor();
+            }
+        }
+        chessboard.drawBoard(Board.testBoard1());
+        repaint();
+        revalidate();
+    }
 }
