@@ -10,7 +10,7 @@ import View.Constant;
 public class Main {
     public static void main(String[] args) {
 
-        ArrayList<Board> boards =  Board.loadBoards("src/Save/test2.txt");
+        ArrayList<Board> boards = Board.loadBoards("src/Save/test2.txt");
         System.out.println(boards);
 
         SwingUtilities.invokeLater(() -> {

@@ -169,44 +169,43 @@ public class MainFrame extends JFrame {
                 fileName = JOptionPane.showInputDialog("File's name to save:");
             }
             String path = "src/Save/" + fileName + ".txt";
-            //System.out.println("File name; " + path);
-            try{
+            // System.out.println("File name; " + path);
+            try {
                 File obj = new File(path);
 
-                if (obj.createNewFile()){
+                if (obj.createNewFile()) {
                     FileWriter writer = new FileWriter(path);
-                    //writer.write("Hello world");
-                    //writer.close();
+                    // writer.write("Hello world");
+                    // writer.close();
 
                     obj.createNewFile();
-                    //System.out.println("created New File");
+                    // System.out.println("created New File");
                     StringBuilder sBuilder = new StringBuilder();
-                    //sBuilder.append(chessboard.getBoard().getTurn().getAlliance().toString());
+                    // sBuilder.append(chessboard.getBoard().getTurn().getAlliance().toString());
                     int boardCount = chessboard.getBoardHistory().size();
                     System.out.println(boardCount);
                     for (int j = 0; j < boardCount; j++) {
-                        //System.out.println(chessboard.getBoardHistory().get(j));
+                        // System.out.println(chessboard.getBoardHistory().get(j));
                         String text = chessboard.getBoardHistory().get(j).getAllActivePiece().size() + "\n";
                         sBuilder.append(text);
-                        for (int k = 0; k < BoardUtils.BOARD_SIZE; k++){
+                        for (int k = 0; k < BoardUtils.BOARD_SIZE; k++) {
                             text = chessboard.getBoardHistory().get(j).tileInfo(k);
-                            if (text != null) sBuilder.append(text + "\n");
+                            if (text != null)
+                                sBuilder.append(text + "\n");
                         }
                     }
-                    //System.out.println();
+                    // System.out.println();
                     writer.write(sBuilder.toString());
-                    //System.out.println(sBuilder);
+                    // System.out.println(sBuilder);
                     writer.close();
-
-
-                } else{
+                } else {
                     System.out.println("same name TODO");
-                    //file alr exist
+                    // file alr exist
                 }
-            } catch(IOException q){
-                q.printStackTrace();;
+            } catch (IOException q) {
+                q.printStackTrace();
+                ;
             }
-            // Call save method from controller
         });
         add(saveButton);
     }
@@ -227,7 +226,7 @@ public class MainFrame extends JFrame {
 
                 ArrayList<Board> boards = Board.loadBoards(path);
                 chessboard.setBoardHistory(boards);
-                chessboard.setBoard(boards.get(boards.size()-1));
+                chessboard.setBoard(boards.get(boards.size() - 1));
                 chessboard.drawBoard(chessboard.getBoard());
             }
         });
