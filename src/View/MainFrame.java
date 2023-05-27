@@ -201,7 +201,8 @@ public class MainFrame extends JFrame {
 
                 } else{
                     System.out.println("same name TODO");
-                    //file alr exist
+                    JOptionPane.showMessageDialog(null, "File already exist", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             } catch(IOException q){
                 q.printStackTrace();;
@@ -226,9 +227,17 @@ public class MainFrame extends JFrame {
                 // Call load method from controller
 
                 ArrayList<Board> boards = Board.loadBoards(path);
-                chessboard.setBoardHistory(boards);
-                chessboard.setBoard(boards.get(boards.size()-1));
-                chessboard.drawBoard(chessboard.getBoard());
+
+                if (boards == null){
+                    System.out.println("invalid board cannot load");
+                    String text = "Cannot load board\nInvalid board: " + BoardUtils.LOAD_ERROR_MESSAGE;
+                    JOptionPane.showMessageDialog(null, text, "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    chessboard.setBoardHistory(boards);
+                    chessboard.setBoard(boards.get(boards.size() - 1));
+                    chessboard.drawBoard(chessboard.getBoard());
+                }
             }
         });
         add(loadButton);

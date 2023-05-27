@@ -18,6 +18,7 @@ public class BoardUtils {
     public static final int TOP_DEN = 3;
     public static final int BOTTOM_DEN = 59;
     public static final List<Terrain> TERRAIN_BOARD = createTerrainBoard();
+    public static String LOAD_ERROR_MESSAGE = "";
 
     public static final Dimension CHESS_BOARD_DIMENSION = new Dimension(700, 700);
     public static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
@@ -38,6 +39,16 @@ public class BoardUtils {
         for (int i : RIGHT_WATER) {
             if (i == position) {
                 // System.out.println("Piece in right river (BoardUtils 40)");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean IN_WATER(int position) {
+        for (int i : WATER) {
+            if (i == position) {
+                // System.out.println("Piece in the river (BoardUtils 50)");
                 return true;
             }
         }

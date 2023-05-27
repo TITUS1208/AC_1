@@ -36,7 +36,7 @@ public class Board {
             return null;
         }
         String piece = getTile(tileCoordinate).getPiece().toString();
-        return String.format("%d %s%s", tileCoordinate, getTile(tileCoordinate).getPiece().getPieceAlliance().toString().substring(0,1), piece);
+        return String.format("%d %s%s", BoardUtils.BOARD_SIZE-1 - tileCoordinate, getTile(tileCoordinate).getPiece().getPieceAlliance().toString().substring(0,1), piece);
     }
 
     public ArrayList<Piece> getAllActivePiece(){
@@ -241,19 +241,34 @@ public class Board {
             //String ally = myReader.nextLine();
             //Alliance turn = ally.equals("WHITE") ? Alliance.WHITE : Alliance.BLACK;
             while (myReader.hasNextLine()) {
-                int index = Integer.valueOf(myReader.nextLine());
-                indices.add(index);
-                for (int i = 0; i < index; i++){
-                    piecesInfo.add(myReader.nextLine());
+                try {
+                    int index = Integer.valueOf(myReader.nextLine());
+                    indices.add(index);
+                    for (int i = 0; i < index; i++) {
+                        try {
+                            piecesInfo.add(myReader.nextLine());
+                        } catch (NoSuchElementException q){
+                            BoardUtils.LOAD_ERROR_MESSAGE = "Index length mismatch";
+                            return null;
+                        }
+                    }
+                } catch (NumberFormatException e){
+                    BoardUtils.LOAD_ERROR_MESSAGE = "Index length mismatch";
+                    return null;
                 }
+
             }
         }catch (FileNotFoundException q){
             q.printStackTrace();
         }
 
-        //TODO remove print
-        System.out.println(indices);
-        System.out.println(piecesInfo);
+        //System.out.println(indices);
+        //System.out.println(piecesInfo);
+        int sum = 0;
+        for (int i : indices){
+            sum += i;
+        }
+        if (sum != piecesInfo.size()) return null;
 
         int indexSum = 0;
 
@@ -268,6 +283,9 @@ public class Board {
             boards.add(builder.build());
         }
 
+        for (Board board : boards){
+            if (!board.isValid()) return null;
+        }
 
         return boards;
     }
@@ -321,6 +339,58 @@ public class Board {
 
 
         return piece;
+    }
+
+    public boolean isValid(){
+        if (getAllActivePiece().size() > 16) {
+            BoardUtils.LOAD_ERROR_MESSAGE = "More than 16 pieces on board";
+            return false;
+        }
+
+        ArrayList<Piece> blackPieces = new ArrayList<>(getBlackPieces());
+        ArrayList<Piece> whitePieces = new ArrayList<>(getWhitePieces());
+
+        for (int i = 0; i < blackPieces.size()-1; i++){
+            for(int j  = i+1; j < blackPieces.size(); j++){
+                if (blackPieces.get(i).getRank() == blackPieces.get(j).getRank()){
+                    BoardUtils.LOAD_ERROR_MESSAGE = "Duplicate pieces";
+                    return  false;
+                }
+            }
+        }
+
+
+        for (int i = 0; i < whitePieces.size()-1; i++){
+            for(int j  = i+1; j < whitePieces.size(); j++){
+                if (whitePieces.get(i).getRank() == whitePieces.get(j).getRank()){
+                    BoardUtils.LOAD_ERROR_MESSAGE = "Duplicate pieces";
+                    return  false;
+                }
+            }
+        }
+
+
+        //check pieces in river and dens
+        for (Piece piece : getAllActivePiece()){
+            if (BoardUtils.IN_WATER(piece.getPiecePosition()) && piece.getRank() != 1){
+                BoardUtils.LOAD_ERROR_MESSAGE = "Invalid piece in water";
+                return false;
+            }
+
+            if (piece.getPiecePosition() == BoardUtils.TOP_DEN && piece.getPieceAlliance() == Alliance.WHITE){
+                BoardUtils.LOAD_ERROR_MESSAGE = "Invalid piece in den";
+                return false;
+            }
+
+            if (piece.getPiecePosition() == BoardUtils.BOTTOM_DEN && piece.getPieceAlliance() == Alliance.BLACK){
+                BoardUtils.LOAD_ERROR_MESSAGE = "Invalid piece in den";
+                return false;
+            }
+        }
+
+
+
+        return true;
     }
 
 
