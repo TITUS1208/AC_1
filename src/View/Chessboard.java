@@ -59,14 +59,16 @@ public class Chessboard extends JPanel {
         validate();
     }
 
-    public void loadPreviousBoard(ArrayList<Board> boardHistory) {
+    public boolean loadPreviousBoard(ArrayList<Board> boardHistory) {
         try {
             chessBoard = boardHistory.get(boardHistory.size() - 2);
             boardHistory.remove(boardHistory.size() - 1);
-            System.out.println("loaded previous board");
+            //System.out.println("loaded previous board");
             drawBoard(chessBoard);
+            return true;
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("cannot load previous board");
+            return false;
+            //System.out.println("cannot load previous board");
         }
 
     }
@@ -133,6 +135,7 @@ public class Chessboard extends JPanel {
                 public void mouseClicked(MouseEvent e) {
                     // boolean gameOver = false;
                     if (isLeftMouseButton(e)) {
+
                         AudioPlayer.playSoundEffect("resource\\Audio\\click2.wav");
                         if (selectedTile == null) {
                             // first click --> select piece
@@ -167,6 +170,7 @@ public class Chessboard extends JPanel {
                                     System.out.println(moveCommand());
 
                                     boardHistory.add(chessBoard);
+                                    frame.updateLabels();
                                     //moveHistory.add(moveCommand());
                                 }
                             }

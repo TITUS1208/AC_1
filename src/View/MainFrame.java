@@ -17,8 +17,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -108,6 +110,14 @@ public class MainFrame extends JFrame {
                 buttonHeight);
         settingsButton.setBounds(0, 0, 36, 36);
         chessboard.setBounds(36, 36, 75 * 7, 75 * 9);
+
+    }
+
+    public void updateLabels(){
+        String text = chessboard.getBoard().getTurn().getAlliance().toString().substring(0,1).equals("W") ?
+                "Red" : "Blue";
+        playerLabel.setText("It's " + text + "'s turn");
+        roundLabel.setText("Round: " + chessboard.getBoardHistory().size());
     }
 
     public void addRestartButton() {
@@ -142,7 +152,11 @@ public class MainFrame extends JFrame {
 
         undoButton.addActionListener(e -> {
             AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
-            chessboard.loadPreviousBoard(chessboard.getBoardHistory());
+            boolean success = chessboard.loadPreviousBoard(chessboard.getBoardHistory());
+            if (!success){
+                JOptionPane.showMessageDialog(null, "Cannot undo", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
             /*
              * ArrayList<String> moveHistory = chessboard.moveHistory;
              * Board board = chessboard.getBoard();
@@ -234,6 +248,50 @@ public class MainFrame extends JFrame {
                     JOptionPane.showMessageDialog(null, text, "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
+
+                    for (Board board : boards){
+                        final Runnable paintBoard = new Runnable(){
+                            public void run(){
+                                chessboard.setBoard(board);
+                                chessboard.drawBoard(board);
+                            }
+                        };
+                        Thread thread = new Thread(){
+                            public void run(){
+                                try{
+                                    SwingUtilities.invokeAndWait(paintBoard);
+                                    Thread.sleep(500);
+                                }
+                                catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        thread.start();
+
+
+                        /*
+
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(500);
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        /*
+                        /*
+                        try {
+                            chessboard.setBoard(board);
+                            chessboard.drawBoard(board);
+                            System.out.println("animating board");
+                            Thread.sleep(250);
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                        }
+
+                         */
+                    }
+
+
                     chessboard.setBoardHistory(boards);
                     chessboard.setBoard(boards.get(boards.size() - 1));
                     chessboard.drawBoard(chessboard.getBoard());

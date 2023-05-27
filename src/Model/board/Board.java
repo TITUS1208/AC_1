@@ -36,7 +36,7 @@ public class Board {
             return null;
         }
         String piece = getTile(tileCoordinate).getPiece().toString();
-        return String.format("%d %s%s", BoardUtils.BOARD_SIZE-1 - tileCoordinate, getTile(tileCoordinate).getPiece().getPieceAlliance().toString().substring(0,1), piece);
+        return String.format("%d %s%s", tileCoordinate, getTile(tileCoordinate).getPiece().getPieceAlliance().toString().substring(0,1), piece);
     }
 
     public ArrayList<Piece> getAllActivePiece(){
@@ -392,11 +392,6 @@ public class Board {
 
         return true;
     }
-
-
-
-
-
 
 
 

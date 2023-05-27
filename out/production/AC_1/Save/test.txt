@@ -3,8 +3,10 @@ Haoyang
 - exe
 
 Titus
-- undo
-    - add error sound when cannot load previous move (extra)
-- load
-    - check illegal positions
-- save
+- undo (done)
+    - add error sound when cannot load previous move (extra) (done)
+- load (done)
+    - check illegal positions (done)
+- save (done)
+- sync timer
+- display turn (player and number)
