@@ -90,7 +90,7 @@ public class MainFrame extends JFrame {
         addBackground();
 
         layoutControl();
-        TimerTasks.main(timerLabel);
+        TimerTasks.main(timerLabel, chessboard);
     }
 
     public void layoutControl() {
@@ -116,14 +116,16 @@ public class MainFrame extends JFrame {
     public void updateLabels(){
         String text = chessboard.getBoard().getTurn().getAlliance().toString().substring(0,1).equals("W") ?
                 "Red" : "Blue";
-        playerLabel.setText("It's " + text + "'s turn");
-        roundLabel.setText("Round: " + chessboard.getBoardHistory().size());
+        playerLabel.setText("It is " + text + "'s turn");
+        roundLabel.setText("Round: " + (chessboard.getBoardHistory().size()+1)/2);
+        //System.out.println(chessboard.getBoardHistory().size());
     }
 
     public void addRestartButton() {
         restartButton = new JButton("RESTART");
         restartButton.setFont(new Font("Monaco", Font.BOLD, 17));
         restartButton.setFocusable(false);
+        TimerTasks.resetTime();
         restartButton.addActionListener(e -> {
             AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             int temp = JOptionPane.showConfirmDialog(this, "Are you sure to restart?");
@@ -153,6 +155,8 @@ public class MainFrame extends JFrame {
         undoButton.addActionListener(e -> {
             AudioPlayer.playSoundEffect("resource\\Audio\\click.wav");
             boolean success = chessboard.loadPreviousBoard(chessboard.getBoardHistory());
+            updateLabels();
+            TimerTasks.resetTime();
             if (!success){
                 JOptionPane.showMessageDialog(null, "Cannot undo", "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -269,7 +273,6 @@ public class MainFrame extends JFrame {
                         };
                         thread.start();
 
-
                         /*
 
                         try {
@@ -291,7 +294,7 @@ public class MainFrame extends JFrame {
                          */
                     }
 
-
+                    TimerTasks.resetTime();
                     chessboard.setBoardHistory(boards);
                     chessboard.setBoard(boards.get(boards.size() - 1));
                     chessboard.drawBoard(chessboard.getBoard());

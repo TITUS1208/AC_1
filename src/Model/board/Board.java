@@ -62,12 +62,26 @@ public class Board {
         this.whitePlayer = new WhitePlayer(this, whiteLegalMoves);
         this.blackPlayer = new BlackPlayer(this, blackLegalMoves);
 
+
         if (builder.turn == null){
             builder.setTurn(Alliance.BLACK);
         } else {
             this.turn = builder.turn.choosePlayer(this.whitePlayer, this.blackPlayer);
         }
 
+
+
+    }
+
+    public Board nextTurn(Builder builder, Board board){
+        builder.setTurn(getTurn().getOpponent().getAlliance());
+        //System.out.println("Next turn: " + getTurn().getOpponent().getAlliance());
+
+        for (Piece i : board.getAllActivePiece()){
+            builder.setPiece(i);
+        }
+
+        return builder.build();
     }
 
     private Collection<Move> calculateLegalMoves(Collection<Piece> pieces){

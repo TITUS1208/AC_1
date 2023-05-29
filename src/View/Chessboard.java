@@ -77,11 +77,12 @@ public class Chessboard extends JPanel {
         return boardHistory;
     }
 
-    /*public ArrayList<String> getMoveHistory(){
-        return moveHistory;
+    public void nextTurn(){
+        boardHistory.add(chessBoard);
+        Board.Builder builder = new Board.Builder();
+        chessBoard = chessBoard.nextTurn(builder, chessBoard);
+        frame.updateLabels();
     }
-
-     */
 
     public Board getInitialBoard(){
         return initialBoard;
@@ -170,7 +171,9 @@ public class Chessboard extends JPanel {
                                     System.out.println(moveCommand());
 
                                     boardHistory.add(chessBoard);
+                                    System.out.println("history len: " + boardHistory.size());
                                     frame.updateLabels();
+                                    TimerTasks.resetTime();
                                     //moveHistory.add(moveCommand());
                                 }
                             }
