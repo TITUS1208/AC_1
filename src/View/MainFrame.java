@@ -113,12 +113,12 @@ public class MainFrame extends JFrame {
 
     }
 
-    public void updateLabels(){
-        String text = chessboard.getBoard().getTurn().getAlliance().toString().substring(0,1).equals("W") ?
-                "Red" : "Blue";
+    public void updateLabels() {
+        String text = chessboard.getBoard().getTurn().getAlliance().toString().substring(0, 1).equals("W") ? "Red"
+                : "Blue";
         playerLabel.setText("It is " + text + "'s turn");
-        roundLabel.setText("Round: " + (chessboard.getBoardHistory().size()+1)/2);
-        //System.out.println(chessboard.getBoardHistory().size());
+        roundLabel.setText("Round: " + (chessboard.getBoardHistory().size() + 1) / 2);
+        // System.out.println(chessboard.getBoardHistory().size());
     }
 
     public void addRestartButton() {
@@ -157,7 +157,7 @@ public class MainFrame extends JFrame {
             boolean success = chessboard.loadPreviousBoard(chessboard.getBoardHistory());
             updateLabels();
             TimerTasks.resetTime();
-            if (!success){
+            if (!success) {
                 JOptionPane.showMessageDialog(null, "Cannot undo", "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
@@ -187,43 +187,44 @@ public class MainFrame extends JFrame {
                 fileName = JOptionPane.showInputDialog("File's name to save:");
             }
             String path = "src/Save/" + fileName + ".txt";
-            //System.out.println("File name; " + path);
-            try{
+            // System.out.println("File name; " + path);
+            try {
                 File obj = new File(path);
 
-                if (obj.createNewFile()){
+                if (obj.createNewFile()) {
                     FileWriter writer = new FileWriter(path);
-                    //writer.write("Hello world");
-                    //writer.close();
+                    // writer.write("Hello world");
+                    // writer.close();
 
                     obj.createNewFile();
-                    //System.out.println("created New File");
+                    // System.out.println("created New File");
                     StringBuilder sBuilder = new StringBuilder();
-                    //sBuilder.append(chessboard.getBoard().getTurn().getAlliance().toString());
+                    // sBuilder.append(chessboard.getBoard().getTurn().getAlliance().toString());
                     int boardCount = chessboard.getBoardHistory().size();
                     System.out.println(boardCount);
                     for (int j = 0; j < boardCount; j++) {
-                        //System.out.println(chessboard.getBoardHistory().get(j));
+                        // System.out.println(chessboard.getBoardHistory().get(j));
                         String text = chessboard.getBoardHistory().get(j).getAllActivePiece().size() + "\n";
                         sBuilder.append(text);
-                        for (int k = 0; k < BoardUtils.BOARD_SIZE; k++){
+                        for (int k = 0; k < BoardUtils.BOARD_SIZE; k++) {
                             text = chessboard.getBoardHistory().get(j).tileInfo(k);
-                            if (text != null) sBuilder.append(text + "\n");
+                            if (text != null)
+                                sBuilder.append(text + "\n");
                         }
                     }
-                    //System.out.println();
+                    // System.out.println();
                     writer.write(sBuilder.toString());
-                    //System.out.println(sBuilder);
+                    // System.out.println(sBuilder);
                     writer.close();
 
-
-                } else{
+                } else {
                     System.out.println("same name TODO");
                     JOptionPane.showMessageDialog(null, "File already exist", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
-            } catch(IOException q){
-                q.printStackTrace();;
+            } catch (IOException q) {
+                q.printStackTrace();
+                ;
             }
             // Call save method from controller
         });
@@ -246,27 +247,26 @@ public class MainFrame extends JFrame {
 
                 ArrayList<Board> boards = Board.loadBoards(path);
 
-                if (boards == null){
+                if (boards == null) {
                     System.out.println("invalid board cannot load");
                     String text = "Cannot load board\nInvalid board: " + BoardUtils.LOAD_ERROR_MESSAGE;
                     JOptionPane.showMessageDialog(null, text, "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
 
-                    for (Board board : boards){
-                        final Runnable paintBoard = new Runnable(){
-                            public void run(){
+                    for (Board board : boards) {
+                        final Runnable paintBoard = new Runnable() {
+                            public void run() {
                                 chessboard.setBoard(board);
                                 chessboard.drawBoard(board);
                             }
                         };
-                        Thread thread = new Thread(){
-                            public void run(){
-                                try{
+                        Thread thread = new Thread() {
+                            public void run() {
+                                try {
                                     SwingUtilities.invokeAndWait(paintBoard);
                                     Thread.sleep(500);
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -274,23 +274,23 @@ public class MainFrame extends JFrame {
                         thread.start();
 
                         /*
-
-                        try {
-                            TimeUnit.MILLISECONDS.sleep(500);
-                        } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        /*
-                        /*
-                        try {
-                            chessboard.setBoard(board);
-                            chessboard.drawBoard(board);
-                            System.out.println("animating board");
-                            Thread.sleep(250);
-                        } catch (InterruptedException ie) {
-                            Thread.currentThread().interrupt();
-                        }
-
+                         * 
+                         * try {
+                         * TimeUnit.MILLISECONDS.sleep(500);
+                         * } catch (InterruptedException ex) {
+                         * throw new RuntimeException(ex);
+                         * }
+                         * /*
+                         * /*
+                         * try {
+                         * chessboard.setBoard(board);
+                         * chessboard.drawBoard(board);
+                         * System.out.println("animating board");
+                         * Thread.sleep(250);
+                         * } catch (InterruptedException ie) {
+                         * Thread.currentThread().interrupt();
+                         * }
+                         * 
                          */
                     }
 
